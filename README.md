@@ -2,10 +2,15 @@
 
 ## Overview
 
-This is a collaborative project to determine plasmid metadata.
-This project aims to develop a comprehensive pipeline for
-visualising plasmid genomes, eventually transforming it into
-a user-friendly product.
+This project provides an interactive, open-source tool built in R (Shiny) for rapid analysis of plasmids and antimicrobial resistance (AMR) patterns.
+The application enables users to:
+- Explore genomic patterns and relationships within AMR datasets
+- Perform comparative analyses across multiple variables
+- Analyse spatio-temporal trends to better understand the spread of AMR plasmids through integrated visualiswations and mapping tools
+
+A hosted graphical user interface (GUI) version is available via the Dutch [National Institute for Public Health and the Environment (RIVM)][https://www.rivm.nl/],
+featuring our plasmid dataset obtained from carbapenem-producing organisms (CPO).
+This repository provides the standalone, open-source version of the tool, allowing users to run the application locally and perform analyses on their own datasets.
 
 ## Installation
 
