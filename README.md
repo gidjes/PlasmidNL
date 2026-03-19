@@ -13,28 +13,79 @@ The following steps should be taken to install our project.
 
 Clone the repository and change directory
 
-    git clone git@gitlab.rivm.nl:teunisg/plasmidnl.git
-    cd plasmidnl
-
-
-## Launching the App
-
-[update to actual way to launch]
-
-To launch the visualization app you can run:
-
-```
-./AMR.sh app
-``` 
-
-If this doesn't work the app can always be launched manually under app/Metadata_app.R.
-
-The help function can be shown by running:
-
-```
-./AMR.sh help
+```bash
+    git clone https://gitlab.com/gidjes/plasmidnl.git
+    cd PlasmidNL
 ```
 
-The help function still contains a lot of older components that don't work anymore in the current state.
-So please mostly ignore it.
+## Running the Application
 
+### 1. Open R / RStudio
+
+Open Rstudio (recommended) and ensure your working directory is set to project root:
+
+```R
+setwd("path/to/PlasmidNL")
+```
+
+### 2. Open global.R
+
+The global.R script contains all the necessary code to run the application. In addition
+it will tell your R / RStudio to install all required packages / dependencies. No manual
+installation is required. Simply select 'Run App' in the top corner of your RStudio or
+run either:
+
+#### From Rstudio
+```R
+shiny::runApp()
+```
+
+#### From R console
+
+In the project root:
+```R
+shiny::runApp(.)
+```
+
+## Application Structure
+
+The application contains several modules / Rscripts to run the application:
+
+- **global.R**  -->     Initialises the app as well installs and loads the required packages
+- **ui.R**      -->     Defines the application user interface
+- **server.R**  -->     Defines the server plotting and data manipulation
+- **functions.R**   -->     Additional helper functions used in the application
+
+## Notes
+
+The initial or first run of the application may take some extra time in order to properly install all packages.
+If package installation fails, try to install all dependencies manually:
+
+```R
+instal.packages(c(
+    # Shiny / Dashboards
+    "shiny", "shinydashboard", "shinyFiles",
+    "shinythemes", "shinyWidgets", "flexdashboard",
+    
+    # Data manipulation
+    "tidyverse", "data.table", "lubridate", "reshape2",
+    
+    # Visualization
+    "ggplot2", "cowplot", "plotly", "DT", "leaflet",
+    "ggalluvial", "ggforce", "treemapify", "scales",
+    "RColorBrewer", "colorspace", "gridExtra", "ellipse",
+    "grDevices",
+    
+    # Mapping / spatial
+    "sf", "rnaturalearth", "rnaturalearthdata",
+    
+    # Trees / widgets
+    "collapsibleTree", "htmlwidgets",
+    
+    # I/O / external data
+    "here", "readr", "jsonlite", "rentrez", "cbsodataR",
+    
+    # Explicit tidyverse components you loaded
+    "stringr"
+    ))
+```
