@@ -1,0 +1,18 @@
+default:
+    METADATA_FILE: shiny-data/metadata.csv
+    NL_MAP_FILE: shiny-data/NLenBESenCAS_2024.json
+    DATABASE:
+        HOST: prod-db-server
+        PORT: 192.168.1.1
+        USER: produser
+        PASSWORD: !expr Sys.getenv("DATABASE_PASSWORD", NA)
+
+develop:
+    inherits: default
+    METADATA_FILE: shiny-data/metadata.csv
+    NL_MAP_FILE: shiny-data/NLenBESenCAS_2024.json
+    DATABASE:
+        HOST: localhost
+        PORT: 5432
+        USER: myuser
+        PASSWORD: !expr Sys.getenv("DATABASE_PASSWORD", NA)
