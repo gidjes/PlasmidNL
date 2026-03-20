@@ -25,12 +25,13 @@ Clone the repository and change directory
 
 ## Running the Application
 
-### 1. Open R / RStudio
+### 1. Open R / RStudio and install shiny
 
 Open Rstudio (recommended) and ensure your working directory is set to project root:
 
 ```R
 setwd("path/to/PlasmidNL")
+install.packages(c("shiny"))
 ```
 
 ### 2. Open global.R
@@ -56,9 +57,9 @@ shiny::runApp(.)
 
 The application contains several modules / Rscripts to run the application:
 
-- **global.R**  -->     Initialises the app as well installs and loads the required packages
-- **ui.R**      -->     Defines the application user interface
-- **server.R**  -->     Defines the server plotting and data manipulation
+- **global.R**      -->     Initialises the app as well installs and loads the required packages
+- **ui.R**          -->     Defines the application user interface
+- **server.R**      -->     Defines the server plotting and data manipulation
 - **functions.R**   -->     Additional helper functions used in the application
 
 ## Notes
@@ -67,7 +68,7 @@ The initial or first run of the application may take some extra time in order to
 If package installation fails, try to install all dependencies manually:
 
 ```R
-instal.packages(c(
+install.packages(c(
     # Shiny / Dashboards
     "shiny", "shinydashboard", "shinyFiles",
     "shinythemes", "shinyWidgets", "flexdashboard",
