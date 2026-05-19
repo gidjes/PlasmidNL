@@ -8,8 +8,8 @@ The application enables users to:
 - Perform comparative analyses across multiple variables
 - Analyse spatio-temporal trends to better understand the spread of AMR plasmids through integrated visualiswations and mapping tools
 
-A hosted graphical user interface (GUI) version is available via the Dutch [National Institute for Public Health and the Environment (RIVM)][https://www.rivm.nl/],
-featuring our plasmid dataset obtained from carbapenem-producing organisms (CPO).
+A hosted graphical user interface (GUI) version is available via the Dutch [National Institute for Public Health and the Environment (RIVM)](https://apps.rivm.nl/bsr-ids-ienv/plasmidnl/),
+featuring our plasmid dataset obtained from [carbapenem-producing organisms (CPO)](http://dx.doi.org/10.5281/ZENODO.18920264).
 This repository provides the standalone, open-source version of the tool, allowing users to run the application locally and perform analyses on their own datasets.
 
 ## Installation
