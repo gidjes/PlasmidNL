@@ -333,10 +333,6 @@ server <- function(input, output, session) {
   output$ClusterTracing <- renderPlotly({
     
     req(input$col1, input$col2, input$col3, input$cluster_trace)
-    #col1 <- "Species"
-    #col2 <- "mobility"
-    #col3 <- "person_traveled_to"
-    #input <- c()
     
     col1 <- as.character(input$col1)
     col2 <- as.character(input$col2)

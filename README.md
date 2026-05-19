@@ -64,6 +64,78 @@ The application contains several modules / Rscripts to run the application:
 - **server.R**      -->     Defines the server plotting and data manipulation
 - **functions.R**   -->     Additional helper functions used in the application
 
+In addition two additional files are used as data input in the application:
+- **metadata.csv**              --> contains the data that is visualised
+- **NLenBESenCAS_2024.json**    --> contains the map coordinate data
+
+Both these files are placed in the shiny-data directory can be replaced with your own data to adapt the application to your circumstances.
+See the instruction below about further details.
+
+```
+shiny-data
+├── metadata.csv
+└── NLenBASenCAS_2024.json
+```
+
+## Working with your own data
+### Using your own map
+The app uses an `sf` spatial file (GeoJSON, GeoPackage, shapefile, etc.) to draw the map layers.
+You can replace the default map of the Netherlands with your own regional map data by editing the configuration file.
+
+#### 1. Add your map file
+Place your map file in the shiny-data directory so it accessible to the app. It is not required to delete the Dutch map:
+
+```
+shiny-data
+├── metadata.csv
+├── NLenBASenCAS_2024.json
+└── my_map.geojson
+```
+
+Supported formats include:
+- .geojson
+- .json
+- .gpkg
+- shapefiles (.shp)
+
+**The file must be readable by the sf package.**
+
+#### 2. Update the config file
+edit `config.yml`:
+
+```yaml
+NL_MAP_FILE: shiny-data/my_map.geojson
+
+MAP_COLUMNS:
+    region_type: column_region_type
+    region_name: column_region_name
+
+MAP_TYPES:
+    municipalities: municipality
+    provinces: province
+    extras: boundary
+```
+
+- Replace `column_region_type` with the name of the column defining the layer types.
+- Replace `column_region_name` with the name of the column defining the region names matching those in `submitter_municipaliy` in metadata.csv
+- Replace `municipality` with variable name of the layer type you want to plot.
+- Replace `province` with the variable name defining the provinces.
+- Replace `boundary` with the variable name definig boundries. Used to plot inset borders.
+
+##### Example file
+| regio_naam | regio_soort | geometry |
+| -------- | ------- | ------- |
+| Utrecht | province | POLYGON(...) |
+| Flevoland | province | POLYGON(...) |
+| Amsterdam | municipality | POLYGON(...) |
+| Meierijstad | municipality | POLYGON(...) |
+
+#### 3. Notes
+- Coordinate reference systems (CRS) are handled automatically by sf.
+- Large map files may increase startup time.
+- MultiPolygon geometries are supported.
+- If your dataset does not contain province/municipality distinctions, you may use the same value for multiple categories.
+
 ## Notes
 
 The initial or first run of the application may take some extra time in order to properly install all packages.
@@ -98,6 +170,6 @@ install.packages(c(
     ))
 ```
 
-# Workflow
+## Workflow
 
 ![PlasmidNL workflow](flowchart/PlasmidNL_flowchart.png)

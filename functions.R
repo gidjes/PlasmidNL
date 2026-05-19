@@ -158,7 +158,7 @@ open_metadata <- function(path, source) {
       )
     )
   
-  metadata$person_traveled_to <- factor(metadata$person_traveled_to, levels = c(setdiff(unique(metadata$person_traveled_to), "No known travel history"), "No known travel history"))
+  metadata$foreign_hospitalisation_history <- factor(metadata$foreign_hospitalisation_history, levels = c(setdiff(unique(metadata$foreign_hospitalisation_history), "No known travel history"), "No known travel history"))
 
   # Generate a table from metadata$submitter_province
   parent_df <- metadata[c("Parent", "submitter_province", "submitter_municipality", "DataSource")]
@@ -981,7 +981,7 @@ rep_palette <- rep_palettes$subcategory_palette
 geo_palettes <- custom_hierarchical_palette(metadata, "submitter_province", "submitter_municipality", categorical_colors)
 province_palette <- geo_palettes$main_palette
 geo_palette <- geo_palettes$subcategory_palette
-travel_palette <- custom_hierarchical_palette(metadata, "person_traveled_to", "person_traveled_to", categorical_colors)$main_palette
+travel_palette <- custom_hierarchical_palette(metadata, "foreign_hospitalisation_history", "foreign_hospitalisation_history", categorical_colors)$main_palette
 
 # AMR
 amr_palettes <- custom_hierarchical_palette(metadata, "amr_classes", "amr_genes", categorical_colors)
@@ -1028,7 +1028,7 @@ palette_by_stage <- list(
   AMR_plasmid = amr_palette,
   submitter_province = province_palette,
   submitter_municipality = geo_palette,
-  person_traveled_to = travel_palette,
+  foreign_hospitalisation_history = travel_palette,
   cluster = cluster_palette
 )
 

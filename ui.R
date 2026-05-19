@@ -363,7 +363,7 @@ ui <- tagList(
             selectInput("col3",
                         label="Select 3rd column",
                         choices=selectable_cols,
-                        selected = "person_traveled_to",
+                        selected = "foreign_hospitalisation_history",
                         multiple = FALSE
             )
           )
