@@ -12,6 +12,8 @@ A hosted graphical user interface (GUI) version is available via the Dutch [Nati
 featuring our plasmid dataset obtained from [carbapenem-producing organisms (CPO)](http://dx.doi.org/10.5281/ZENODO.18920264).
 This repository provides the standalone, open-source version of the tool, allowing users to run the application locally and perform analyses on their own datasets.
 
+A template csv to upload your own data to compare, as well as a pipeline to type plasmid genomes in the same way as the metadata set is available at the [PlasmidNL_typing repository](https://github.com/gidjes/PlasmidNL_typing)
+
 ## Installation
 
 The following steps should be taken to install our project.
