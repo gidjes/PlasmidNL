@@ -95,3 +95,7 @@ install.packages(c(
     "stringr"
     ))
 ```
+
+# Workflow
+
+![PlasmidNL workflow](flowchart/PlasmidNL_flowchart.png)
