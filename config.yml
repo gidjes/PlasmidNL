@@ -1,18 +1,13 @@
 default:
     METADATA_FILE: shiny-data/metadata.csv
     NL_MAP_FILE: shiny-data/NLenBESenCAS_2024.json
-    DATABASE:
-        HOST: prod-db-server
-        PORT: 192.168.1.1
-        USER: produser
-        PASSWORD: !expr Sys.getenv("DATABASE_PASSWORD", NA)
 
-develop:
-    inherits: default
-    METADATA_FILE: shiny-data/metadata.csv
-    NL_MAP_FILE: shiny-data/NLenBESenCAS_2024.json
-    DATABASE:
-        HOST: localhost
-        PORT: 5432
-        USER: myuser
-        PASSWORD: !expr Sys.getenv("DATABASE_PASSWORD", NA)
+    MAP_COLUMNS:
+        region_type: regio_soort # Column name indicating plotting layer/value type
+        region_name: regio_naam # Column name containing names matching metadata
+
+    MAP_TYPES:
+        municipalities: "GM" # Column plotting layer variable name to filter for
+        provinces: "PV" # Column plotting layer variable name provinces for filter
+        extras: "rand" # edges coordinates for boxes in map
+

@@ -1,3 +1,4 @@
+# Create the colour palettes for plotting
 create_palettes <- function(metadata, categorical_colors) {
   numerical_palette <- c(
     "#FFFFFF",
@@ -36,6 +37,28 @@ create_palettes <- function(metadata, categorical_colors) {
   )
 }
 
+# Load the map
+load_map <- function(path, cfg) {
+
+  map <- sf::st_read(path)
+
+  region_col <- cfg$MAP_COLUMNS$region_type %||% "regio_soort"
+  name_col   <- cfg$MAP_COLUMNS$region_name %||% "regio_naam"
+
+  map %>%
+    rowwise() %>%
+    mutate(
+      bbox = list(sf::st_bbox(geometry)),
+      x = (bbox$xmin + bbox$xmax) / 2,
+      y = bbox$ymin - 20000,
+      regio_naam = stringr::str_replace(
+        .data[[name_col]],
+        "eilanden",
+        "islands"
+      )
+    ) %>%
+    ungroup()
+}
 
 # Determine the order of Standard_Cluster based on frequency
 cluster_order <- function() {

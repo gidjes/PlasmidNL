@@ -77,19 +77,20 @@ metadata$cluster <- factor(metadata$cluster, levels = sorted_categories, ordered
 
 ## Set up geo-data
 nl_map_path <- config$NL_MAP_FILE
-nl_map <- st_read(nl_map_path) %>%
-  rowwise() %>%
-  mutate(
-    bbox = list(st_bbox(geometry)),
-    x = (bbox$xmin + bbox$xmax) / 2,  # midpoint X
-    y = bbox$ymin - 20000,             # just below bottom
-    regio_naam = str_replace(regio_naam, "eilanden", "islands")
-  ) %>%
-  ungroup()
+nl_map <- load_map(nl_map_path, config)
+
+region_col <- config$MAP_COLUMNS$region_type %||% "regio_soort"
 nl_municiple_map <- nl_map %>%
-  filter((regio_soort == "GM" | regio_soort == "rand"))
+  filter(.data[[region_col]] %in% c(
+    config$MAP_TYPES$municipalities,
+    config$MAP_TYPES$extras
+  ))
+
 nl_provinces <- nl_map %>%
-  filter((regio_soort == "PV" | regio_soort == "rand"))
+  filter(.data[[region_col]] %in% c(
+    config$MAP_TYPES$provinces,
+    config$MAP_TYPES$extras
+  ))
 
 # count samples per province
 sample_counts <- metadata %>%

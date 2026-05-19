@@ -25,7 +25,7 @@ ui <- tagList(
       # Menu items
       sidebarMenu(
         menuItem("Home",
-                 tabName = "cluster_tracing", icon = icon("home")
+                 tabName = "home", icon = icon("home")
         ),
         menuItem("All Clusters Overview",
                  tabName = "genomes", icon = icon("dna"),
@@ -41,7 +41,7 @@ ui <- tagList(
                  tabName = "clusters", icon = icon("microscope"),
                  menuSubItem("Isolate-level Overview", tabName = "isolate_overview"),
                  menuSubItem("Genomic-level Overiew", tabName = "gen_overview"),
-                 menuSubItem("Metadata Sankey", tabName = "home"),
+                 menuSubItem("Metadata Sankey", tabName = "cluster_tracing"),
                  menuSubItem("Co-occurance", tabName = "cluster_co_occurance"),
                  menuSubItem("Cluster Table", tabName = "cluster_data")
         )
