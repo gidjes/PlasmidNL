@@ -80,17 +80,22 @@ nl_map_path <- config$NL_MAP_FILE
 nl_map <- load_map(nl_map_path, config)
 
 region_col <- config$MAP_COLUMNS$region_type %||% "regio_soort"
-nl_municiple_map <- nl_map %>%
-  filter(.data[[region_col]] %in% c(
+
+nl_municiple_map <- filter_map_type(
+  nl_map,
+  c(
     config$MAP_TYPES$municipalities,
     config$MAP_TYPES$extras
-  ))
+  )
+)
 
-nl_provinces <- nl_map %>%
-  filter(.data[[region_col]] %in% c(
+nl_provinces <- filter_map_type(
+  nl_map,
+  c(
     config$MAP_TYPES$provinces,
     config$MAP_TYPES$extras
-  ))
+  )
+)
 
 # count samples per province
 sample_counts <- metadata %>%

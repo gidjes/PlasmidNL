@@ -39,25 +39,56 @@ create_palettes <- function(metadata, categorical_colors) {
 
 # Load the map
 load_map <- function(path, cfg) {
-
-  map <- sf::st_read(path)
-
-  region_col <- cfg$MAP_COLUMNS$region_type %||% "regio_soort"
+  map <- sf::st_read(path) %>%
+    sf::st_zm(drop = TRUE)
+  
+  region_col <- cfg$MAP_COLUMNS$region_type
   name_col   <- cfg$MAP_COLUMNS$region_name %||% "regio_naam"
+  
+  # Rename name column → regio_naam
+  map <- map %>%
+    dplyr::rename(regio_naam = dplyr::all_of(name_col))
+  
+  # Rename or create region type column
+  if (!is.null(region_col) && region_col %in% names(map)) {
+    map <- map %>%
+      dplyr::rename(regio_soort = dplyr::all_of(region_col))
+  } else {
+    map$regio_soort <- "default"
+  }
+  
+  # Compute centroids OUTSIDE mutate, then attach as plain columns
+  centroids   <- sf::st_centroid(sf::st_geometry(map))
+  coords      <- sf::st_coordinates(centroids)
+  
+  map$x <- coords[, 1]
+  map$y <- coords[, 2]
+  
+  map <- map %>%
+    dplyr::mutate(
+      regio_naam = stringr::str_replace(regio_naam, "eilanden", "islands")
+    )
+  
+  map
+}
+
+filter_map_type <- function(map, values = NULL) {
+  if (all(map$regio_soort == "default")) {
+    return(map)
+  }
+  if (is.null(values) || length(values) == 0) {
+    return(map)
+  }
+
+  values <- unlist(values)
+  values <- values[!is.na(values)]
+
+  if (length(values) == 0) {
+    return(map)
+  }
 
   map %>%
-    rowwise() %>%
-    mutate(
-      bbox = list(sf::st_bbox(geometry)),
-      x = (bbox$xmin + bbox$xmax) / 2,
-      y = bbox$ymin - 20000,
-      regio_naam = stringr::str_replace(
-        .data[[name_col]],
-        "eilanden",
-        "islands"
-      )
-    ) %>%
-    ungroup()
+    dplyr::filter(regio_soort %in% values)
 }
 
 # Determine the order of Standard_mge_cluster based on frequency
@@ -384,15 +415,21 @@ geo_plot_ly <- function(df, geo_df, geo_level, title, name, mge_cluster_in = "",
     )
   max_val <- max(geo_counts$n_isolates, na.rm = TRUE)
 
-  gg_plot <- geo_counts %>%
-    ggplot() +
-    geom_sf(data = filter(geo_counts, regio_soort == "rand"),
-            fill = NA, color = "black", linewidth=0.1) +
-    geom_sf(data = filter(geo_counts, regio_soort != "rand"), 
-            aes(fill=n_isolates,
-                text=sprintf(str_glue("Location: %s<br>{name} (<i>n</i>): {number_display}"), regio_naam, n_isolates)
-                ),
-            linewidth=0.1) +
+  gg_plot <- ggplot()
+  
+  # Only add the border layer if "rand" regions exist
+  if (any(geo_counts$regio_soort == "rand")) {
+    gg_plot <- gg_plot +
+      geom_sf(data = filter(geo_counts, regio_soort == "rand"),
+              fill = NA, color = "black", linewidth = 0.1)
+  }
+  
+  gg_plot <- gg_plot +
+    geom_sf(data = filter(geo_counts, regio_soort != "rand"),
+            aes(fill = n_isolates,
+                text = sprintf(str_glue("Location: %s<br>{name} (<i>n</i>): {number_display}"),
+                               regio_naam, n_isolates)),
+            linewidth = 0.1) +
     theme_ggrivm() +
     scale_fill_gradientn(colours=numerical_palette,
                          values = rescale(c(0, rescale_factor, max_val * 0.5, max_val)),  # note: second value is just above 0
@@ -425,19 +462,23 @@ geo_plot_ly <- function(df, geo_df, geo_level, title, name, mge_cluster_in = "",
   plot_ly <- ggplotly(gg_plot, tooltip = "text") %>%
     style(hoveron=style_name) %>%
     config(responsive = TRUE)
-  rand_labels <- subset(geo_df, regio_soort == "rand")
   
-  for(i in seq_len(nrow(rand_labels))){
-    plot_ly <- plot_ly %>% add_annotations(
-      x = rand_labels$x[i],
-      y = rand_labels$y[i],
-      text = rand_labels$regio_naam[i],
-      showarrow = FALSE,
-      xanchor = "center",
-      yanchor = "bottom",
-      textfont = list(size=6)
-    )
+  if (any(geo_counts$regio_soort == "rand")) {
+    rand_labels <- subset(geo_df, regio_soort == "rand")
+  
+    for(i in seq_len(nrow(rand_labels))){
+      plot_ly <- plot_ly %>% add_annotations(
+        x = rand_labels$x[i],
+        y = rand_labels$y[i],
+        text = rand_labels$regio_naam[i],
+        showarrow = FALSE,
+        xanchor = "center",
+        yanchor = "bottom",
+        textfont = list(size=6)
+      )
+    }
   }
+  
   plot_ly <- plot_ly %>%
     layout(
       xaxis = list(autorange = TRUE),

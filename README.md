@@ -101,6 +101,8 @@ Supported formats include:
 **The file must be readable by the sf package.**
 
 #### 2. Update the config file
+If using a multi-layer map file, make sure `region_type` matches the column determining the layer. If using a single-layer map, simple omit this line entirely.
+
 edit `config.yml`:
 
 ```yaml
