@@ -45,12 +45,12 @@ server <- function(input, output, session) {
     
   }, ignoreInit = FALSE)
   
-  # cluster data
-  output$cluster_table <- renderDT({
-    selected_cluster <- input$cluster_select
-    if (!is.null(selected_cluster)) {
+  # mge_cluster data
+  output$mge_cluster_table <- renderDT({
+    selected_mge_cluster <- input$mge_cluster_select
+    if (!is.null(selected_mge_cluster)) {
       
-      filtered_data <- metadata[metadata$cluster == selected_cluster, ]
+      filtered_data <- metadata[metadata$mge_cluster == selected_mge_cluster, ]
       
       filtered_data[] <- lapply(filtered_data, function(x) {
         if (is.character(x)) {
@@ -70,11 +70,11 @@ server <- function(input, output, session) {
   output$voorblad_map <- renderPlotly({geo_plot_ly(parent_df, nl_provinces, "submitter_province", "Number of isolates included from each province", "Isolates")})
   
   ## Genomic Overview tabs
-  # Cluster plasmid counts
-  ClusterFreq <- metadata %>%
-    ggplot(aes(x = cluster)) +
+  # mge_cluster plasmid counts
+  mge_clusterFreq <- metadata %>%
+    ggplot(aes(x = mge_cluster)) +
     geom_bar(fill = "#154273", colour="#b4b4b4", linewidth=0.2, alpha=0.9) +
-    labs(y = "Count (n)", x = "Cluster") +
+    labs(y = "Count (n)", x = "mge_cluster") +
     theme_ggrivm() +
     theme(
       legend.position = "bottom",
@@ -82,19 +82,19 @@ server <- function(input, output, session) {
       plot.title = element_text(size= 12, color="black", face = "plain"),
     )
   
-  ClusterFreqPlotly <- ggplotly(ClusterFreq)
+  mge_clusterFreqPlotly <- ggplotly(mge_clusterFreq)
   
   
-  # GC percentage per cluster
-  ClusterGC <- metadata %>%
-    ggplot(aes(x = cluster, y = gc_percentage)) +
+  # GC percentage per mge_cluster
+  mge_clusterGC <- metadata %>%
+    ggplot(aes(x = mge_cluster, y = GC%)) +
     geom_boxplot(width = 0.5,
                  fill = "#154273",
                  colour="#b4b4b4",
                  linewidth=0.2,
                  alpha=0.9,
     ) +
-    labs(y = "GC Content (%)", x = "Cluster") +
+    labs(y = "GC Content (%)", x = "mge_cluster") +
     theme_ggrivm() +
     theme(
       legend.position = "bottom",
@@ -102,18 +102,18 @@ server <- function(input, output, session) {
       plot.title = element_text(size= 12, color="black", face = "plain"),
     )
   
-  ClusterGCPlotly <- ggplotly(ClusterGC)
+  mge_clusterGCPlotly <- ggplotly(mge_clusterGC)
   
-  # BP length per cluster
-  ClusterBP <- metadata %>%
-    ggplot(aes(x = cluster, y = bp_length)) +
+  # BP length per mge_cluster
+  mge_clusterBP <- metadata %>%
+    ggplot(aes(x = mge_cluster, y = bp_length)) +
     geom_boxplot(width = 0.5,
                  fill = "#154273",
                  colour="#b4b4b4",
                  linewidth=0.2,
                  alpha=0.9,
     ) +
-    labs( y = "Sequence length (bp)", x = "Cluster") +
+    labs( y = "Sequence length (bp)", x = "mge_cluster") +
     scale_y_log10(labels = scales::label_number()) +
     theme_ggrivm() +
     theme(
@@ -122,13 +122,13 @@ server <- function(input, output, session) {
       plot.title = element_text(size= 12, color="black", face = "plain"),
     )
   
-  ClusterBPPlotly <- ggplotly(ClusterBP)
+  mge_clusterBPPlotly <- ggplotly(mge_clusterBP)
   
   annotations <- list(
     list(
       x=-0.05,
       y=1,
-      text = "Plasmid count per cluster",  
+      text = "Plasmid count per mge_cluster",  
       xref = "paper",  
       yref = "paper",  
       xanchor = "left",  
@@ -138,7 +138,7 @@ server <- function(input, output, session) {
     list(
       x=-0.05,
       y=0.65,
-      text = "Distribution of GC-content (%) of plasmids in each cluster",  
+      text = "Distribution of GC-content (%) of plasmids in each mge_cluster",  
       xref = "paper",  
       yref = "paper",  
       xanchor = "left",  
@@ -148,7 +148,7 @@ server <- function(input, output, session) {
     list(
       x=-0.05,
       y=0.31,
-      text = "Distribution of plasmid lengths (bp) in each cluster",  
+      text = "Distribution of plasmid lengths (bp) in each mge_cluster",  
       xref = "paper",  
       yref = "paper",  
       xanchor = "left",  
@@ -157,9 +157,9 @@ server <- function(input, output, session) {
     )
   )
   
-  OverviewPlots <- subplot(ClusterFreqPlotly,
-                           ClusterGCPlotly,
-                           ClusterBPPlotly,
+  OverviewPlots <- subplot(mge_clusterFreqPlotly,
+                           mge_clusterGCPlotly,
+                           mge_clusterBPPlotly,
                            nrows=3,
                            margin=0.04,
                            shareX = TRUE,
@@ -170,10 +170,10 @@ server <- function(input, output, session) {
   output$Overview <- renderPlotly({OverviewPlots})
   
   ## Plasmid Types
-  # Mobility per cluster
-  output$ClusterMob <- renderPlotly({
+  # Mobility per mge_cluster
+  output$mge_clusterMob <- renderPlotly({
     df <- expand_data()
-    categorical_bar(df, "mobility", categorical_colors[0:3], "Distribution of predicted plasmid mobility", "Cluster") %>%
+    categorical_bar(df, "mobility", categorical_colors[0:3], "Distribution of predicted plasmid mobility", "mge_cluster") %>%
       layout(
         autosize = TRUE,
         margin = list(l = 60, r = 20, b = 80, t = 28),
@@ -186,7 +186,7 @@ server <- function(input, output, session) {
       ) %>%
       config(responsive = TRUE)
   })
-  output$ClusterSpecies <- renderPlotly({
+  output$mge_clusterSpecies <- renderPlotly({
     df <- expand_data()
     categorical_bar(df, "Species", species_palette, "Distribution of plasmid species origin", "") %>%
       layout(
@@ -201,7 +201,7 @@ server <- function(input, output, session) {
       ) %>%
       config(responsive = TRUE)
   })
-  output$ClusterReplicon <- renderPlotly({
+  output$mge_clusterReplicon <- renderPlotly({
     df <- expand_data()
     categorical_bar(df, "replicon", rep_palette, "Distribution of known plasmid replicons", "") %>%
       layout(
@@ -219,9 +219,9 @@ server <- function(input, output, session) {
   
   
   ## AMR Data 
-  output$ClusterGeneCount <- renderPlotly({
+  output$mge_clusterGeneCount <- renderPlotly({
     df <- expand_data()
-    count_bar(df, "amr_genes", "Frequency of antimicrobial resistance genes detected", "") %>%
+    count_bar(df, "amr", "Frequency of antimicrobial resistance genes detected", "") %>%
       layout(
         autosize = TRUE,
         margin = list(l = 60, r = 20, b = 80, t = 28),
@@ -233,7 +233,7 @@ server <- function(input, output, session) {
       ) %>%
       config(responsive = TRUE)
   })
-  output$ClusterClass <- renderPlotly({
+  output$mge_clusterClass <- renderPlotly({
     df <- expand_data()
     count_bar(df, "amr_classes", "Distribution of resistances to associated antibiotic classes", "") %>%
       layout(
@@ -264,12 +264,12 @@ server <- function(input, output, session) {
   
   
   
-  output$ClusterGeneMap <- renderPlotly({frac_heatmap(metadata, input$gene_type, "cluster", str_glue("Ratio {input$gene_type}"))})
+  output$mge_clusterGeneMap <- renderPlotly({frac_heatmap(metadata, input$gene_type, "mge_cluster", str_glue("Ratio {input$gene_type}"))})
   
   
   output$tnse_scatter <- renderPlotly({
     df <- expand_data()
-    ellips_scatter(df, "cluster")
+    ellips_scatter(df, "mge_cluster")
   })
   output$tsne2 <- renderPlotly({
     df <- expand_data()
@@ -330,9 +330,9 @@ server <- function(input, output, session) {
       config(responsive = TRUE)
   })
   
-  output$ClusterTracing <- renderPlotly({
+  output$mge_clusterTracing <- renderPlotly({
     
-    req(input$col1, input$col2, input$col3, input$cluster_trace)
+    req(input$col1, input$col2, input$col3, input$mge_cluster_trace)
     
     col1 <- as.character(input$col1)
     col2 <- as.character(input$col2)
@@ -342,7 +342,7 @@ server <- function(input, output, session) {
     
     # Filter and select relevant columns
     sankey_df <- metadata %>%
-      filter(cluster %in% input$cluster_trace) %>%
+      filter(mge_cluster %in% input$mge_cluster_trace) %>%
       select(all_of(c(col1, col2, col3))) %>%
       drop_na()
     
@@ -437,60 +437,60 @@ server <- function(input, output, session) {
   output$ResistenceProfile <- renderPlotly({
     frac_heatmap(metadata,
                  "amr_classes",
-                 "cluster",
+                 "mge_cluster",
                  str_glue("Ratio of Occurance of Resistence to Antibiotic Classes "),
                  "-",
-                 cluster_filter=input$cluster_over
+                 mge_cluster_filter=input$mge_cluster_over
     )
   })
   
-  output$ClusterGeneProfile <- renderPlotly({
+  output$mge_clusterGeneProfile <- renderPlotly({
     frac_heatmap(metadata,
-                 "amr_genes",
-                 "cluster",
-                 str_glue("Ratio of ARG Occurance in Cluster"),
+                 "amr",
+                 "mge_cluster",
+                 str_glue("Ratio of ARG Occurance in mge_cluster"),
                  "-",
-                 cluster_filter=input$cluster_over
+                 mge_cluster_filter=input$mge_cluster_over
     )
   })
   
-  output$ClusterMetalProfile <- renderPlotly({
+  output$mge_clusterMetalProfile <- renderPlotly({
     frac_heatmap(metadata,
-                 "metal_genes",
-                 "cluster",
-                 str_glue("Ratio of Metal Resistance Genes in Cluster"),
+                 "metal",
+                 "mge_cluster",
+                 str_glue("Ratio of Metal Resistance Genes in mge_cluster"),
                  "-",
-                 cluster_filter=input$cluster_over
+                 mge_cluster_filter=input$mge_cluster_over
     )
   })
   
-  output$PlasmidMap <- renderPlotly({geo_plot_ly(metadata, nl_municiple_map, "submitter_municipality", "Number of plasmids received\n of this cluster by municipality", "Plasmids", input$cluster_over)})
-  output$PopulationMap <- renderPlotly({geo_plot_ly(metadata, nl_municiple_map, "submitter_municipality", "Fraction of isolates with plasmids\n of this cluster by municipality", "Plasmids", input$cluster_over, TRUE)})
-  output$ClusterTimeSeries <- renderPlotly({categorical_time_series(metadata, input$cluster_over, input$group_col)})
-  output$SpeciesDistribution <- renderPlotly({treemap(metadata, "Species", "Genus", input$cluster_over, c(genus_palette, species_palette))})
-  output$RepliconDistribution <- renderPlotly({treemap(metadata, "replicon", "replicon_family", input$cluster_over, c(rep_family_palette, rep_palette))})
+  output$PlasmidMap <- renderPlotly({geo_plot_ly(metadata, nl_municiple_map, "submitter_municipality", "Number of plasmids received\n of this mge_cluster by municipality", "Plasmids", input$mge_cluster_over)})
+  output$PopulationMap <- renderPlotly({geo_plot_ly(metadata, nl_municiple_map, "submitter_municipality", "Fraction of isolates with plasmids\n of this mge_cluster by municipality", "Plasmids", input$mge_cluster_over, TRUE)})
+  output$mge_clusterTimeSeries <- renderPlotly({categorical_time_series(metadata, input$mge_cluster_over, input$group_col)})
+  output$SpeciesDistribution <- renderPlotly({treemap(metadata, "Species", "Genus", input$mge_cluster_over, c(genus_palette, species_palette))})
+  output$RepliconDistribution <- renderPlotly({treemap(metadata, "replicon", "replicon_family", input$mge_cluster_over, c(rep_family_palette, rep_palette))})
   
   
-  output$ClusterCoCluster <- renderPlotly({
-    cluster_df <- rbind(
-      create_normalised_co_occurance(metadata, input$cluster_co_oc, "None", input$co_occur),
-      create_normalised_co_occurance(metadata, input$cluster_co_oc, input$subdivision, input$co_occur)
+  output$mge_clusterComge_cluster <- renderPlotly({
+    mge_cluster_df <- rbind(
+      create_normalised_co_occurance(metadata, input$mge_cluster_co_oc, "None", input$co_occur),
+      create_normalised_co_occurance(metadata, input$mge_cluster_co_oc, input$subdivision, input$co_occur)
     )
     
-    y_categories <- cluster_df %>%
-      separate_rows(cluster2, sep = ",") %>%
-      filter(cluster2 != "") %>%
-      pull(cluster2) %>%
+    y_categories <- mge_cluster_df %>%
+      separate_rows(mge_cluster2, sep = ",") %>%
+      filter(mge_cluster2 != "") %>%
+      pull(mge_cluster2) %>%
       unique()
     
     row_height <- 20
     plot_height <- max(300, length(y_categories) * row_height)
     
-    cluster_cluster_heat <- cluster_df %>%
+    mge_cluster_mge_cluster_heat <- mge_cluster_df %>%
       ggplot(
         aes(
-          x = cluster1,
-          y = cluster2
+          x = mge_cluster1,
+          y = mge_cluster2
         )
       ) +
       geom_tile(
@@ -500,8 +500,8 @@ server <- function(input, output, session) {
             str_glue(
               "%s, <br>co-occurs with: %s<br>in %.1f%% of cases"
             ),
-            cluster1,
-            cluster2,
+            mge_cluster1,
+            mge_cluster2,
             ratio * 100
           )
         ),
@@ -514,7 +514,7 @@ server <- function(input, output, session) {
                            limits=c(0, 1)
       ) +
       labs(
-        title = "Co-occurrence Heatmap of clusters",
+        title = "Co-occurrence Heatmap of mge_clusters",
         x = input$subdivision,
         y = input$co_occur
       ) +
@@ -527,7 +527,7 @@ server <- function(input, output, session) {
         legend.key.size = unit(0.7, "cm"),
         plot.title = element_text(size= 12, color="black", face = "plain")
       )
-    plot_ly <- ggplotly(cluster_cluster_heat, height = plot_height, tooltip="text") %>%
+    plot_ly <- ggplotly(mge_cluster_mge_cluster_heat, height = plot_height, tooltip="text") %>%
       layout(
         showlegend = FALSE
       )

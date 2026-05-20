@@ -70,10 +70,10 @@ metadata <- dfs[[1]]
 parent_df <- dfs[[2]]
 metadata_full <- dfs[[3]]
 
-# Sort cluster order by frequency
-value_counts <- table(metadata$cluster)
+# Sort mge_cluster order by frequency
+value_counts <- table(metadata$mge_cluster)
 sorted_categories <- names(sort(value_counts, decreasing = TRUE))
-metadata$cluster <- factor(metadata$cluster, levels = sorted_categories, ordered = TRUE)
+metadata$mge_cluster <- factor(metadata$mge_cluster, levels = sorted_categories, ordered = TRUE)
 
 ## Set up geo-data
 nl_map_path <- config$NL_MAP_FILE
@@ -102,7 +102,7 @@ provinces <- left_join(nl_provinces, sample_counts, by = c("regio_naam" = "submi
 selectable_cols <- c(
   "Species","Genus", "ST", "replicon","replicon_family","mobility",
   "submitter_province","submitter_municipality","foreign_hospitalisation_history",
-  "amr_genes","amr_classes","AMR_plasmid","carba_allele", 
-  "CP_plasmid", "metal_genes", "virulence_genes", "sampling_source", "sampling_OH_domain", "DataSource", "Institute"
+  "amr","amr_classes","AMR_plasmid","carba_allele", 
+  "CP_plasmid", "metal", "virulence", "sampling_source", "sampling_OH_domain", "DataSource", "Institute"
 )
 

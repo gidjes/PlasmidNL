@@ -7,7 +7,7 @@ create_palettes <- function(metadata, categorical_colors) {
     palette_rivm("categorical")[3]
   )
   
-  cluster_palette <- custom_hierarchical_palette(metadata, "cluster", "cluster", categorical_colors)
+  mge_cluster_palette <- custom_hierarchical_palette(metadata, "mge_cluster", "mge_cluster", categorical_colors)
   species_palette <- custom_hierarchical_palette(metadata, "Genus", "Species", categorical_colors)
   ST_palette <- custom_hierarchical_palette(metadata, "Genus", "ST", categorical_colors)
   geo_palette <- custom_hierarchical_palette(metadata, "submitter_province", "submitter_municipality", categorical_colors)
@@ -28,7 +28,7 @@ create_palettes <- function(metadata, categorical_colors) {
   
   list(
     numerical_palette = numerical_palette,
-    cluster_palette = cluster_palette,
+    mge_cluster_palette = mge_cluster_palette,
     species_palette = species_palette,
     ST_palette = ST_palette,
     geo_palette = geo_palette,
@@ -60,24 +60,24 @@ load_map <- function(path, cfg) {
     ungroup()
 }
 
-# Determine the order of Standard_Cluster based on frequency
-cluster_order <- function() {
-  names(sort(table(metadata$cluster), decreasing = TRUE))
+# Determine the order of Standard_mge_cluster based on frequency
+mge_cluster_order <- function() {
+  names(sort(table(metadata$mge_cluster), decreasing = TRUE))
 }
 
 # Functions: 
 open_metadata <- function(path, source) {
   metadata_full <- read.csv(path, header = TRUE, sep = ";", fileEncoding = "ISO-8859-1")
   metadata_full$DataSource <- source
-  metadata <- metadata_full <- metadata_full[!(metadata_full$cluster %in% c("-", "-1")), ]
+  metadata <- metadata_full <- metadata_full[!(metadata_full$mge_cluster %in% c("-", "-1")), ]
   
-  # Sort cluster order by frequency
-  value_counts <- table(metadata$cluster)
+  # Sort mge_cluster order by frequency
+  value_counts <- table(metadata$mge_cluster)
   sorted_categories <- names(sort(value_counts, decreasing = TRUE))
   
   metadata <- metadata %>%
-    mutate(cluster = ifelse(cluster %in% c("", "-"), "-", as.character(as.integer(cluster))),
-           cluster = factor(cluster, levels = sorted_categories, ordered = TRUE),
+    mutate(mge_cluster = ifelse(mge_cluster %in% c("", "-"), "-", as.character(as.integer(mge_cluster))),
+           mge_cluster = factor(mge_cluster, levels = sorted_categories, ordered = TRUE),
            sampling_date = as.Date(sampling_date, "%d-%m-%Y"),
            tsne1D = ifelse(tsne1D %in% c("", "-"), NA, as.numeric(tsne1D)),
            tsne2D = ifelse(tsne2D %in% c("", "-"), NA, as.numeric(tsne2D)),
@@ -102,51 +102,51 @@ open_metadata <- function(path, source) {
           ~ paste0("<i>", .x, "</i>", collapse = ",")
         )
       ),
-      amr_genes := ifelse(
-        is.na(amr_genes) | amr_genes == "" | amr_genes == "-",
+      amr := ifelse(
+        is.na(amr) | amr == "" | amr == "-",
         "-",
         map_chr(
-          str_split(as.character(amr_genes), "\\s*,\\s*"),
+          str_split(as.character(amr), "\\s*,\\s*"),
           ~ paste0("<i>", .x, "</i>", collapse = ",")
         )
       ),
-      metal_genes := ifelse(
-        is.na(metal_genes) | metal_genes == "" | metal_genes == "-",
+      metal := ifelse(
+        is.na(metal) | metal == "" | metal == "-",
         "-",
         map_chr(
-          str_split(as.character(metal_genes), "\\s*,\\s*"),
+          str_split(as.character(metal), "\\s*,\\s*"),
           ~ paste0("<i>", .x, "</i>", collapse = ",")
         )
       ),
-      virulence_genes := ifelse(
-        is.na(virulence_genes) | virulence_genes == "" | virulence_genes == "-",
+      virulence := ifelse(
+        is.na(virulence) | virulence == "" | virulence == "-",
         "-",
         map_chr(
-          str_split(as.character(virulence_genes), "\\s*,\\s*"),
+          str_split(as.character(virulence), "\\s*,\\s*"),
           ~ paste0("<i>", .x, "</i>", collapse = ",")
         )
       ),
-      heat_genes := ifelse(
-        is.na(heat_genes) | heat_genes == "" | heat_genes == "-",
+      heat := ifelse(
+        is.na(heat) | heat == "" | heat == "-",
         "-",
         map_chr(
-          str_split(as.character(heat_genes), "\\s*,\\s*"),
+          str_split(as.character(heat), "\\s*,\\s*"),
           ~ paste0("<i>", .x, "</i>", collapse = ",")
         )
       ),
-      biocide_genes := ifelse(
-        is.na(biocide_genes) | biocide_genes == "" | biocide_genes == "-",
+      biocide := ifelse(
+        is.na(biocide) | biocide == "" | biocide == "-",
         "-",
         map_chr(
-          str_split(as.character(biocide_genes), "\\s*,\\s*"),
+          str_split(as.character(biocide), "\\s*,\\s*"),
           ~ paste0("<i>", .x, "</i>", collapse = ",")
         )
       ),
-      acid_genes := ifelse(
-        is.na(acid_genes) | acid_genes == "" | acid_genes == "-",
+      acid := ifelse(
+        is.na(acid) | acid == "" | acid == "-",
         "-",
         map_chr(
-          str_split(as.character(acid_genes), "\\s*,\\s*"),
+          str_split(as.character(acid), "\\s*,\\s*"),
           ~ paste0("<i>", .x, "</i>", collapse = ",")
         )
       )
@@ -171,21 +171,21 @@ open_metadata <- function(path, source) {
 create_normalised_co_occurance <- function(df, subset_val, breakdown_col, alt_meta) {
   if (!(alt_meta == "None")) {
     df <- df %>%
-      mutate(cluster = case_when(
-        cluster %in% subset_val ~ cluster,
+      mutate(mge_cluster = case_when(
+        mge_cluster %in% subset_val ~ mge_cluster,
         TRUE ~ as.character(!!sym(alt_meta))
       ))
   }
   if (!(breakdown_col == "None")) {
     df <- df %>%
-      mutate(cluster = case_when(
-        cluster %in% subset_val ~ paste(as.character(cluster), !! rlang::ensym(breakdown_col), sep="_"),
-        TRUE ~ cluster
+      mutate(mge_cluster = case_when(
+        mge_cluster %in% subset_val ~ paste(as.character(mge_cluster), !! rlang::ensym(breakdown_col), sep="_"),
+        TRUE ~ mge_cluster
       ))
   }
   subset_co_occurance <- df %>%
-    count(Parent, cluster) %>%
-    pivot_wider(names_from = cluster, values_from=n, values_fill=0) %>%
+    count(Parent, mge_cluster) %>%
+    pivot_wider(names_from = mge_cluster, values_from=n, values_fill=0) %>%
     select(!"Parent")
   binary_df <- subset_co_occurance > 0
   # Compute the co-occurrence matrix
@@ -207,18 +207,18 @@ create_normalised_co_occurance <- function(df, subset_val, breakdown_col, alt_me
   colnames(normalized_matrix) <- colnames(subset_co_occurance)
   # Convert the normalized matrix to a dataframe for plotting
   normalized_df <- as.data.frame(as.table(normalized_matrix))
-  names(normalized_df) <- c("cluster1", "cluster2", "ratio")
+  names(normalized_df) <- c("mge_cluster1", "mge_cluster2", "ratio")
   
   if (!(breakdown_col == "None")) {
-    cluster_df <- normalized_df %>%
-      filter(str_detect(cluster1, paste("^", as.character(subset_val), "_", sep=""))) %>%
-      filter(!str_detect(cluster2,paste("^", as.character(subset_val), "_", sep="")))
+    mge_cluster_df <- normalized_df %>%
+      filter(str_detect(mge_cluster1, paste("^", as.character(subset_val), "_", sep=""))) %>%
+      filter(!str_detect(mge_cluster2,paste("^", as.character(subset_val), "_", sep="")))
   } else {
-    cluster_df <- normalized_df %>%
-      filter(cluster1 == subset_val) %>%
-      filter(!(cluster2 == subset_val))
+    mge_cluster_df <- normalized_df %>%
+      filter(mge_cluster1 == subset_val) %>%
+      filter(!(mge_cluster2 == subset_val))
   }
-  return(cluster_df)
+  return(mge_cluster_df)
 }
 
 
@@ -340,7 +340,7 @@ add_palette_colour <- function(plot_in, column, df = metadata) {
 
 
 ## Plotting functions
-geo_plot_ly <- function(df, geo_df, geo_level, title, name, cluster_in = "", fractionalise = FALSE) {
+geo_plot_ly <- function(df, geo_df, geo_level, title, name, mge_cluster_in = "", fractionalise = FALSE) {
   if (fractionalise==TRUE) {
     sample_count_population <- df %>%
       select(Parent, !!sym(geo_level)) %>%
@@ -352,9 +352,9 @@ geo_plot_ly <- function(df, geo_df, geo_level, title, name, cluster_in = "", fra
     number_display = "%s"
   }
   # count samples per province
-  if (cluster_in != "") {
+  if (mge_cluster_in != "") {
     df <- df %>%
-      filter(cluster %in% cluster_in)
+      filter(mge_cluster %in% mge_cluster_in)
     style_name = "points"
   } else {
     style_name = "fills"
@@ -446,32 +446,32 @@ geo_plot_ly <- function(df, geo_df, geo_level, title, name, cluster_in = "", fra
 
 categorical_bar <- function(df, column_name, colourlist, title, xlab) {
   df <- df %>%
-    group_by(cluster) %>%
+    group_by(mge_cluster) %>%
     mutate(HasUploaded = ifelse(any(DataSource == "UserUpload"), "Contains upload", "Reference only")) %>%
     ungroup()
   
-  # Compute fraction per cluster and category
+  # Compute fraction per mge_cluster and category
   df_fraction <- df %>%
-    group_by(cluster, !!sym(column_name)) %>%
+    group_by(mge_cluster, !!sym(column_name)) %>%
     summarise(Count = n(), .groups = "drop") %>%
-    group_by(cluster) %>%
+    group_by(mge_cluster) %>%
     mutate(Fraction = Count / sum(Count)) %>%
     ungroup()
   
   # Join fraction back to original df for hover
   df <- df %>%
-    left_join(df_fraction, by = c("cluster", column_name))
+    left_join(df_fraction, by = c("mge_cluster", column_name))
   
   gg_plot <- df %>%
     #mutate(safe_category = ifelse(!!sym(column_name) %in% c("", "-"), NA, !!sym(column_name))) %>%
-    ggplot(aes(x=cluster)) +
+    ggplot(aes(x=mge_cluster)) +
     geom_bar(aes(
       fill = !!sym(column_name),
       colour = HasUploaded,
       linewidth = HasUploaded,
       text=sprintf(
-        str_glue("Cluster: %s<br>{column_name}: %s<br>Fraction: %.1f%%"),
-        cluster,
+        str_glue("mge_cluster: %s<br>{column_name}: %s<br>Fraction: %.1f%%"),
+        mge_cluster,
         !!sym(column_name),
         Fraction * 100
       )
@@ -482,7 +482,7 @@ categorical_bar <- function(df, column_name, colourlist, title, xlab) {
     alpha=0.95,
     ) +
     theme_ggrivm() +
-    labs(title = str_glue("{title} by Cluster"), y = "Ratio", x = xlab) +
+    labs(title = str_glue("{title} by mge_cluster"), y = "Ratio", x = xlab) +
     scale_fill_manual(values=colourlist, na.value="#FFFFFF") +
     scale_color_manual(
       values=c("Reference only" = "#b4b4b4", "Contains upload" = "grey17"),
@@ -546,36 +546,36 @@ categorical_bar <- function(df, column_name, colourlist, title, xlab) {
 
 count_bar <- function(df, column_name, title, xlab, none_string="-") {
   df <- df %>%
-    group_by(cluster) %>%
+    group_by(mge_cluster) %>%
     mutate(HasUploaded = ifelse(any(DataSource == "UserUpload"), "Contains upload", "Reference only")) %>%
     ungroup()
   
   
-  # Compute fraction per cluster and category
+  # Compute fraction per mge_cluster and category
   df_fraction <- df %>%
-    group_by(cluster, !!sym(column_name)) %>%
+    group_by(mge_cluster, !!sym(column_name)) %>%
     summarise(Count = n(), .groups = "drop") %>%
-    group_by(cluster) %>%
+    group_by(mge_cluster) %>%
     mutate(Fraction = Count / sum(Count)) %>%
     ungroup()
   
   # Join fraction back to original df for hover
   df <- df %>%
-    left_join(df_fraction, by = c("cluster", column_name))
+    left_join(df_fraction, by = c("mge_cluster", column_name))
   
   gg_plot <- df %>%
     mutate(count = sapply(strsplit(!!sym(column_name) , ","), function(x) length(unique(x)))) %>%
     mutate(count = ifelse(!!sym(column_name) == none_string, 0, count)) %>%
-    ggplot(aes(x = cluster)) +
+    ggplot(aes(x = mge_cluster)) +
     geom_bar(aes(
       fill = factor(count),
       colour = HasUploaded,
       linewidth = HasUploaded,
       text=sprintf(
         str_glue(
-          "Cluster: %s, <br>ARGs (<i>n</i>): %s<br>Fraction: %.1f%%"
+          "mge_cluster: %s, <br>ARGs (<i>n</i>): %s<br>Fraction: %.1f%%"
         ),
-        cluster,
+        mge_cluster,
         count,
         Fraction * 100
       )
@@ -584,7 +584,7 @@ count_bar <- function(df, column_name, title, xlab, none_string="-") {
     #colour="#b4b4b4",
     alpha=0.9,
     ) +
-    labs(title = str_glue("{title} by Cluster"), y = "Ratio", x = xlab) +
+    labs(title = str_glue("{title} by mge_cluster"), y = "Ratio", x = xlab) +
     scale_fill_custom_discrete(n = length(levels(count)), color_list=numerical_palette) +
     scale_color_manual(values=c("Reference only" = "#b4b4b4", "Contains upload" = "grey17")) +
     scale_linewidth_manual(values=c("Reference only" = 0.1, "Contains upload" = 1)) +
@@ -645,17 +645,17 @@ count_bar <- function(df, column_name, title, xlab, none_string="-") {
   return(plot_ly)
 }
 
-frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = "-", cluster_filter = "") {
-  # Generate a table from metadata$cluster
-  category_table <- table(df$cluster)
+frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = "-", mge_cluster_filter = "") {
+  # Generate a table from metadata$mge_cluster
+  category_table <- table(df$mge_cluster)
   category_table_df <- as.data.frame(category_table)
-  names(category_table_df) <- c("cluster", "total")
+  names(category_table_df) <- c("mge_cluster", "total")
   
-  if (cluster_filter != "") {
+  if (mge_cluster_filter != "") {
     df <- df %>%
-      filter(cluster %in% cluster_filter)
+      filter(mge_cluster %in% mge_cluster_filter)
     category_table_df <- category_table_df %>%
-      filter(cluster %in% cluster_filter)
+      filter(mge_cluster %in% mge_cluster_filter)
     x_val = column_name_y
     y_val = column_name_x
     plot_height = 300
@@ -674,7 +674,7 @@ frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = 
   
 
   
-  # Resistences genes per cluster
+  # Resistences genes per mge_cluster
   # Create the heatmap using ggplot2
   gg_plot <- df %>%
     mutate(!!sym(column_name_y) := ifelse(!!sym(column_name_y) %in% c(""), "-", !!sym(column_name_y))) %>%
@@ -695,7 +695,7 @@ frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = 
         fill = ratio,
         text = sprintf(
           str_glue(
-            "Cluster: %s, <br>Gene name: %s<br>Fraction: %.1f%%"
+            "mge_cluster: %s, <br>Gene name: %s<br>Fraction: %.1f%%"
           ),
           !!sym(x_val),
           !!sym(y_val),
@@ -710,7 +710,7 @@ frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = 
     scale_fill_gradientn(colors=numerical_palette,
                          limits=c(0, 1)
     ) +
-    labs(title = str_glue("{title} by Cluster"), y = y_val, x = x_val) +
+    labs(title = str_glue("{title} by mge_cluster"), y = y_val, x = x_val) +
     theme_ggrivm()  +
     theme(
       legend.position = "bottom",
@@ -727,18 +727,18 @@ frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = 
   return(plot_ly)
 }
 
-ellips_scatter <- function(df, column_name="cluster") {
+ellips_scatter <- function(df, column_name="mge_cluster") {
   df <- df %>%
-    filter(cluster != "-") %>%
+    filter(mge_cluster != "-") %>%
     mutate(tsne1D = ifelse(tsne1D %in% c("", "-"), NA, as.numeric(tsne1D))) %>%
     mutate(tsne2D = ifelse(tsne2D %in% c("", "-"), NA, as.numeric(tsne2D)))
-  df_clusters <- df %>%
-    filter(cluster != "-1")
+  df_mge_clusters <- df %>%
+    filter(mge_cluster != "-1")
   # mge tsne scatterplot
   gg_plot <- df %>%
     ggplot() +
     stat_ellipse(
-      data = df_clusters,
+      data = df_mge_clusters,
       geom = "polygon",
       type = "norm",
       fill = NA,
@@ -750,7 +750,7 @@ ellips_scatter <- function(df, column_name="cluster") {
       aes(
         x = tsne1D,
         y = tsne2D,
-        color = cluster
+        color = mge_cluster
       ),
     ) +
     geom_point(
@@ -765,7 +765,7 @@ ellips_scatter <- function(df, column_name="cluster") {
       alpha=0.65
     ) +
     scale_color_manual(
-      values = cluster_palette,  # this will control the ellipse outlines
+      values = mge_cluster_palette,  # this will control the ellipse outlines
       #aesthetics = "color"      # specifically for the stat_ellipse layer
       guide="none"
     ) +
@@ -773,7 +773,7 @@ ellips_scatter <- function(df, column_name="cluster") {
       values = c("Reference" = 21, "UserUpload" = 24),
       guide = "none"
     ) +
-    labs(title = str_glue("tSNE-coordinate scatterplot of clustered plasmids\nColoured by {column_name}"), y = "tsne2D", x = "tsne1D") +
+    labs(title = str_glue("tSNE-coordinate scatterplot of mge_clustered plasmids\nColoured by {column_name}"), y = "tsne2D", x = "tsne1D") +
     theme_ggrivm() +
     theme(
       legend.position = "bottom",
@@ -803,7 +803,7 @@ ellips_scatter <- function(df, column_name="cluster") {
   # Clean parentheses and whitespace
   df_legend$components <- lapply(df_legend$components, function(x) gsub("^\\(|\\)$", "", trimws(x)))
   
-  if (column_name == "cluster") {
+  if (column_name == "mge_cluster") {
     df_legend$components <- lapply(df_legend$components, function(x) gsub("^1$|^, 1$", "", x[x != ""]))
   }
   
@@ -827,10 +827,10 @@ ellips_scatter <- function(df, column_name="cluster") {
   return(plot_ly)
 }
 
-categorical_time_series <- function(df, cluster_filter, column) {
+categorical_time_series <- function(df, mge_cluster_filter, column) {
   
   time_plot <- df %>%
-    filter(cluster %in% cluster_filter) %>%
+    filter(mge_cluster %in% mge_cluster_filter) %>%
     mutate(month = floor_date(as.Date(sampling_date), "month")) %>%
     count(month, !!sym(column), name = "count") %>%
     ggplot(
@@ -867,9 +867,9 @@ categorical_time_series <- function(df, cluster_filter, column) {
   return(time_plotly)
 }
 
-treemap <- function(df, column_name, grouping_column, display_cluster, palette) {
+treemap <- function(df, column_name, grouping_column, display_mge_cluster, palette) {
   count_distribution <- df %>%
-    filter(cluster %in% display_cluster) %>%
+    filter(mge_cluster %in% display_mge_cluster) %>%
     group_by(.data[[column_name]], .data[[grouping_column]]) %>%
     summarise(n = n(), .groups = "drop")
   
@@ -963,8 +963,8 @@ numerical_palette <- c(
   palette_rivm("categorical")[3]
 )
 
-# Cluster
-cluster_palette <- custom_hierarchical_palette(metadata, "cluster", "cluster", categorical_colors)$main_palette
+# mge_cluster
+mge_cluster_palette <- custom_hierarchical_palette(metadata, "mge_cluster", "mge_cluster", categorical_colors)$main_palette
 
 # Species
 origin_palettes <- custom_hierarchical_palette(metadata, "Genus", "Species", categorical_colors)
@@ -984,7 +984,7 @@ geo_palette <- geo_palettes$subcategory_palette
 travel_palette <- custom_hierarchical_palette(metadata, "foreign_hospitalisation_history", "foreign_hospitalisation_history", categorical_colors)$main_palette
 
 # AMR
-amr_palettes <- custom_hierarchical_palette(metadata, "amr_classes", "amr_genes", categorical_colors)
+amr_palettes <- custom_hierarchical_palette(metadata, "amr_classes", "amr", categorical_colors)
 amr_gene_palette <- amr_palettes$subcategory_palette
 amr_class_palette <- amr_palettes$main_palette
 amr_palette <- custom_hierarchical_palette(metadata, "AMR_plasmid", "AMR_plasmid", c("azure4", "darkred"))$main_palette
@@ -992,8 +992,8 @@ amr_palette <- custom_hierarchical_palette(metadata, "AMR_plasmid", "AMR_plasmid
 # Single
 mobility_palette <- custom_hierarchical_palette(metadata, "mobility", "mobility", categorical_colors[0:3])$main_palette
 CP_palette <- custom_hierarchical_palette(metadata, "CP_plasmid", "CP_plasmid", c("azure4", "darkred"))$main_palette
-metal_palette <- custom_hierarchical_palette(metadata, "metal_genes", "metal_genes", categorical_colors)$main_palette
-virulence_palette <- custom_hierarchical_palette(metadata, "virulence_genes", "virulence_genes", categorical_colors)$main_palette
+metal_palette <- custom_hierarchical_palette(metadata, "metal", "metal", categorical_colors)$main_palette
+virulence_palette <- custom_hierarchical_palette(metadata, "virulence", "virulence", categorical_colors)$main_palette
 
 # Carba alleles
 carba_palettes <- metadata %>%
@@ -1021,15 +1021,15 @@ palette_by_stage <- list(
   mobility = mobility_palette,
   carba_allele = carba_palette,
   CP_plasmid = CP_palette,
-  metal_genes = metal_palette,
-  virulence_genes = virulence_palette,
-  amr_genes = amr_gene_palette,
+  metal = metal_palette,
+  virulence = virulence_palette,
+  amr = amr_gene_palette,
   amr_classes = amr_class_palette,
   AMR_plasmid = amr_palette,
   submitter_province = province_palette,
   submitter_municipality = geo_palette,
   foreign_hospitalisation_history = travel_palette,
-  cluster = cluster_palette
+  mge_cluster = mge_cluster_palette
 )
 
 # Alpha parameter for Sankey

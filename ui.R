@@ -38,12 +38,12 @@ ui <- tagList(
                  menuSubItem("interactive mge tsne", tabName = "tsne2")
         ),
         menuItem("Cluster in-depth",
-                 tabName = "clusters", icon = icon("microscope"),
+                 tabName = "Clusters", icon = icon("microscope"),
                  menuSubItem("Isolate-level Overview", tabName = "isolate_overview"),
                  menuSubItem("Genomic-level Overiew", tabName = "gen_overview"),
-                 menuSubItem("Metadata Sankey", tabName = "cluster_tracing"),
-                 menuSubItem("Co-occurance", tabName = "cluster_co_occurance"),
-                 menuSubItem("Cluster Table", tabName = "cluster_data")
+                 menuSubItem("Metadata Sankey", tabName = "mge_cluster_tracing"),
+                 menuSubItem("Co-occurance", tabName = "mge_cluster_co_occurance"),
+                 menuSubItem("Cluster Table", tabName = "mge_cluster_data")
         )
       ))),
   
@@ -116,22 +116,22 @@ ui <- tagList(
       tabItem(
         tabName = "plasmid_type",
         fluidRow(
-          column(12, plotlyOutput("ClusterSpecies", height = "30vh", width = "100%"))
+          column(12, plotlyOutput("mge_clusterSpecies", height = "30vh", width = "100%"))
         ),
         fluidRow(
-          column(12, plotlyOutput("ClusterReplicon", height = "30vh", width = "100%"))
+          column(12, plotlyOutput("mge_clusterReplicon", height = "30vh", width = "100%"))
         ),
         fluidRow(
-          column(12, plotlyOutput("ClusterMob", height = "30vh", width = "100%"))
+          column(12, plotlyOutput("mge_clusterMob", height = "30vh", width = "100%"))
         )
       ),
       tabItem(
         tabName = "AMR_data",
         fluidRow(
-          column(12, plotlyOutput("ClusterGeneCount", height = "30vh", width = "100%"))
+          column(12, plotlyOutput("mge_clusterGeneCount", height = "30vh", width = "100%"))
         ),
         fluidRow(
-          column(12, plotlyOutput("ClusterClass", height = "30vh", width = "100%"))
+          column(12, plotlyOutput("mge_clusterClass", height = "30vh", width = "100%"))
         ),
         fluidRow(
           column(12, plotlyOutput("CarbaAllele", height = "30vh", width = "100%"))
@@ -145,18 +145,18 @@ ui <- tagList(
             selectInput("gene_type",
                         "Select column",
                         choices = c(
-                          "amr_genes",
+                          "amr",
                           "amr_classes",
                           "carba_allele",
-                          "virulence_genes",
-                          "metal_genes",
+                          "virulence",
+                          "metal",
                           "metal_classes",
-                          "biocide_genes",
-                          "heat_genes",
-                          "acid_genes"
+                          "biocide",
+                          "heat",
+                          "acid"
                         ),
                         selected = "amr_classes", multiple = FALSE),
-            column(12, plotlyOutput("ClusterGeneMap", height = "95vh", width = "100%"))
+            column(12, plotlyOutput("mge_clusterGeneMap", height = "95vh", width = "100%"))
           )
         )
       ),
@@ -171,7 +171,7 @@ ui <- tagList(
         fluidRow(
           box(
             width = 12, # or any other appropriate value
-            selectInput("highlight", "Select column", choices = c("cluster", selectable_cols), selected = "cluster", multiple = FALSE),
+            selectInput("highlight", "Select column", choices = c("mge_cluster", selectable_cols), selected = "mge_cluster", multiple = FALSE),
             column(12, plotlyOutput("tsne2", height = "80vh", width = "100%"))
           )
         )
@@ -200,7 +200,7 @@ ui <- tagList(
                 "subgrouping",
                 label = "Subgrouping",
                 choices = list(
-                  "cluster",
+                  "mge_cluster",
                   "Species",
                   "Genus",
                   "mobility",
@@ -212,7 +212,7 @@ ui <- tagList(
                   "CP_plasmid"
                 ),
                 multiple = FALSE,
-                selected = "cluster"
+                selected = "mge_cluster"
               )
             ),
             column(
@@ -238,16 +238,16 @@ ui <- tagList(
         )
       ),
       
-      ## Cluster insight tabs
+      ## mge_cluster insight tabs
       # Group 1
       tabItem(
         tabName = "isolate_overview",
         fluidRow(
           box(
             width = 12,
-            selectInput("cluster_over",
+            selectInput("mge_cluster_over",
                         label="Select cluster",
-                        choices=unique(metadata$cluster),
+                        choices=unique(metadata$mge_cluster),
                         selected = "13",
                         multiple = FALSE
             )
@@ -288,7 +288,7 @@ ui <- tagList(
         ),
         fluidRow(column(12, box("Counts of cluster plasmids detected over time",
                                 width = 12,
-                                plotlyOutput("ClusterTimeSeries")
+                                plotlyOutput("mge_clusterTimeSeries")
         )
         )
         )
@@ -300,15 +300,15 @@ ui <- tagList(
         fluidRow(
           box(
             width = 12,
-            selectInput("cluster_over",
+            selectInput("mge_cluster_over",
                         label="Select cluster",
-                        choices=unique(metadata$cluster),
+                        choices=unique(metadata$mge_cluster),
                         selected = "13",
                         multiple = FALSE
             )
           )
         ),
-        fluidRow(column(12, box("Distribution known replicons for cluster plasmids",
+        fluidRow(column(12, box("Distribution known replicons for mge_cluster plasmids",
                                 width = 12,
                                 plotlyOutput("RepliconDistribution")
         )
@@ -320,7 +320,7 @@ ui <- tagList(
             box(
               "",
               width = 12,
-              plotlyOutput("ClusterGeneProfile", height="10%", width="100%")
+              plotlyOutput("mge_clusterGeneProfile", height="10%", width="100%")
             )
           )
         ),
@@ -330,7 +330,7 @@ ui <- tagList(
             box(
               "",
               width = 12,
-              plotlyOutput("ClusterMetalProfile", height="10%", width="100%")
+              plotlyOutput("mge_clusterMetalProfile", height="10%", width="100%")
             )
           )
         )
@@ -338,13 +338,13 @@ ui <- tagList(
       
       # Sankey
       tabItem(
-        tabName = "cluster_tracing",
+        tabName = "mge_cluster_tracing",
         fluidRow(
           box(
             width = 12,
-            selectInput("cluster_trace",
+            selectInput("mge_cluster_trace",
                         label="Select cluster",
-                        choices=unique(metadata$cluster),
+                        choices=unique(metadata$mge_cluster),
                         selected = "37",
                         multiple = FALSE
             ),
@@ -368,39 +368,39 @@ ui <- tagList(
             )
           )
         ),
-        fluidRow(column(12, plotlyOutput("ClusterTracing", height = "95vh", width = "90%")))
+        fluidRow(column(12, plotlyOutput("mge_clusterTracing", height = "95vh", width = "90%")))
       ),
       
       ## Table tab
       tabItem(
-        tabName = "cluster_data",
+        tabName = "mge_cluster_data",
         fluidPage(
           box(
             width = 12, # or any other appropriate value
-            selectInput("cluster_select", "Select Cluster", choices = unique(metadata$cluster), multiple = TRUE),
-            div(DTOutput("cluster_table"), style = "width: 100%; overflow-x: auto;")
+            selectInput("mge_cluster_select", "Select cluster", choices = unique(metadata$mge_cluster), multiple = TRUE),
+            div(DTOutput("mge_cluster_table"), style = "width: 100%; overflow-x: auto;")
           )
         )
       ),
       
       ## Co-occurance
       tabItem(
-        tabName = "cluster_co_occurance",
+        tabName = "mge_cluster_co_occurance",
         fluidRow(
           box(
             width = 12,
-            selectInput("cluster_co_oc",
+            selectInput("mge_cluster_co_oc",
                         label="Select cluster",
-                        choices=unique(metadata$cluster),
+                        choices=unique(metadata$mge_cluster),
                         selected = "13",
                         multiple = FALSE
             ),
             selectInput("subdivision", "Select cluster subdivision", choices = selectable_cols, selected = "replicon", multiple = FALSE),
-            selectInput("co_occur", "Select co-occurance group", choices = c("cluster", selectable_cols), selected = "cluster", multiple = FALSE),
+            selectInput("co_occur", "Select co-occurance group", choices = c("mge_cluster", selectable_cols), selected = "mge_cluster", multiple = FALSE),
           )
         ),
         fluidRow(column(12,
-                        plotlyOutput("ClusterCoCluster", height = "95vh", width = "95%")
+                        plotlyOutput("mge_clusterComge_cluster", height = "95vh", width = "95%")
         )
         )
       )
