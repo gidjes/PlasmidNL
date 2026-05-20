@@ -87,7 +87,7 @@ server <- function(input, output, session) {
   
   # GC percentage per mge_cluster
   mge_clusterGC <- metadata %>%
-    ggplot(aes(x = mge_cluster, y = GC%)) +
+    ggplot(aes(x = mge_cluster, y = GC_perc)) +
     geom_boxplot(width = 0.5,
                  fill = "#154273",
                  colour="#b4b4b4",

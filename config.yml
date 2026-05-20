@@ -1,13 +1,12 @@
 default:
     METADATA_FILE: shiny-data/metadata.csv
-    NL_MAP_FILE: shiny-data/municipalities.geojson
+    NL_MAP_FILE: shiny-data/NLenBESenCAS_2024.json
 
     MAP_COLUMNS:
-        region_type: type # Column name indicating plotting layer/value type
-        region_name: label_en # Column name containing names matching metadata
+        region_type: regio_soort # Column name indicating plotting layer/value type
+        region_name: regio_naam # Column name containing names matching metadata
 
     MAP_TYPES:
-        municipalities: "Feature" # Column plotting layer variable name to filter for
-        provinces: "Feature" # Column plotting layer variable name provinces for filter
+        municipalities: "GM" # Column plotting layer variable name to filter for
+        provinces: "PV" # Column plotting layer variable name provinces for filter
         extras: "rand" # edges coordinates for boxes in map
-
