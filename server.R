@@ -249,7 +249,7 @@ server <- function(input, output, session) {
   })
   output$CarbaAllele <- renderPlotly({
     df <- expand_data()
-    categorical_bar(df, "carba_allele", carba_palette, "Number of carbapenemase-encoding alleles",  "") %>%
+    categorical_bar(df, "carba_alleles", carba_palette, "Number of carbapenemase-encoding alleles",  "") %>%
       layout(
         autosize = TRUE,
         margin = list(l = 60, r = 20, b = 80, t = 28),

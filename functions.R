@@ -16,15 +16,15 @@ create_palettes <- function(metadata, categorical_colors) {
   carba_palette <- metadata %>%
     mutate(carba_family = factor(
       ifelse(
-        carba_allele == "-",
+        carba_alleles == "-",
         "",
         ifelse(
-          grepl(",", carba_allele),
+          grepl(",", carba_alleles),
           "Mixed",
-          str_split_fixed(carba_allele, "-", 2)[,1])),
+          str_split_fixed(carba_alleles, "-", 2)[,1])),
       levels = c("", "blaIMP", "blaKPC", "blaNDM", "blaOXA", "blaVIM", "Mixed"),
       ordered = TRUE, exclude = NULL)) %>%
-    custom_hierarchical_palette("carba_family", "carba_allele", c("#FFFFFF", categorical_colors))
+    custom_hierarchical_palette("carba_family", "carba_alleles", c("#FFFFFF", categorical_colors))
   
   list(
     numerical_palette = numerical_palette,
@@ -82,7 +82,9 @@ open_metadata <- function(path, source) {
            tsne1D = ifelse(tsne1D %in% c("", "-"), NA, as.numeric(tsne1D)),
            tsne2D = ifelse(tsne2D %in% c("", "-"), NA, as.numeric(tsne2D)),
            Genus = sub(" .*$", "", Species),
-           submitter_province = str_replace(submitter_province, "eilanden", "islands")
+           submitter_province = str_replace(submitter_province, "eilanden", "islands"),
+           AMR_plasmid = ifelse(AMR_plasmid == 1, "Yes", "No"),
+           CP_plasmid = ifelse(CP_plasmid == 1, "Yes", "No")
     ) %>%
     ## Update the Italic columns
     mutate(
@@ -94,11 +96,11 @@ open_metadata <- function(path, source) {
         Genus,
         labels = paste0("<i>", levels(factor(Genus)), "</i>")
       ),
-      carba_allele := ifelse(
-        is.na(carba_allele) | carba_allele == "" | carba_allele == "-",
+      carba_alleles := ifelse(
+        is.na(carba_alleles) | carba_alleles == "" | carba_alleles == "-",
         "-",
         map_chr(
-          str_split(as.character(carba_allele), "\\s*,\\s*"),
+          str_split(as.character(carba_alleles), "\\s*,\\s*"),
           ~ paste0("<i>", .x, "</i>", collapse = ",")
         )
       ),
@@ -999,15 +1001,15 @@ virulence_palette <- custom_hierarchical_palette(metadata, "virulence", "virulen
 carba_palettes <- metadata %>%
   mutate(carba_family = factor(
     ifelse(
-      carba_allele == "-",
+      carba_alleles == "-",
       "",
       ifelse(
-        grepl(",", carba_allele),
+        grepl(",", carba_alleles),
         "Mixed",
-        str_split_fixed(carba_allele, "-", 2)[,1])),
+        str_split_fixed(carba_alleles, "-", 2)[,1])),
     levels=c("", "<i>blaIMP", "<i>blaKPC", "<i>blaNDM", "<i>blaOXA", "<i>blaVIM", "Mixed"),
     ordered = TRUE, exclude = NULL)) %>%
-  custom_hierarchical_palette(., "carba_family", "carba_allele", c("#FFFFFF", categorical_colors))
+  custom_hierarchical_palette(., "carba_family", "carba_alleles", c("#FFFFFF", categorical_colors))
 carba_palette <- carba_palettes$subcategory_palette
 
 
@@ -1019,7 +1021,7 @@ palette_by_stage <- list(
   replicon_family = rep_family_palette,
   replicon = rep_palette,
   mobility = mobility_palette,
-  carba_allele = carba_palette,
+  carba_alleles = carba_palette,
   CP_plasmid = CP_palette,
   metal = metal_palette,
   virulence = virulence_palette,

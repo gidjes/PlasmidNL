@@ -147,7 +147,7 @@ ui <- tagList(
                         choices = c(
                           "amr",
                           "amr_classes",
-                          "carba_allele",
+                          "carba_alleles",
                           "virulence",
                           "metal",
                           "metal_classes",
@@ -357,7 +357,7 @@ ui <- tagList(
             selectInput("col2",
                         label="Select 2nd column",
                         choices=selectable_cols,
-                        selected = "carba_allele",
+                        selected = "carba_alleles",
                         multiple = FALSE
             ),
             selectInput("col3",
