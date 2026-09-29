@@ -1,0 +1,29 @@
+Column name;Data description;Data type
+Plasmid;Plasmid ID record;Text
+replicon;Replicon;Text
+replicon_family;Replicon group;Text
+mobility;Predicted mobility;Text
+mge_cluster;Cluster ID;Text
+tsne1D;t-SNE 1D coordinates;Numerical
+tsne2D;t-SNE 1D coordinates;Numerical
+amr;List of detected antibiotic resistance genes, comma-seperated for individual genes, empty for none;Text
+amr_classes;List of antibiotic classes with associated resistance, comma-seperated for individual classes, empty for none;Text
+AMR_plasmid;Is the record an AMR plasmid;Binary
+carba_allele;List of detected carbapenem resistance genes, comma-seperated for individual genes, empty for none;Text
+CP_plasmid;Is the record a carbapenen-resistance plasmid;Binary
+virulence;List of detected antibiotic resistance genes, comma-seperated for individual genes, empty for none;Text
+metal;List of detected metal resistance genes, comma-seperated for individual genes, empty for none;Text
+metal_classes;List of metals with associated resistance, comma-seperated for individual classes, empty for none;Text
+biocide;List of detected biocide resistance genes, comma-seperated for individual genes, empty for none;Text
+heat;List of detected heat resistance genes, comma-seperated for individual genes, empty for none;Text
+acid;List of detected acid resistance genes, comma-seperated for individual genes, empty for none;Text
+GC_perc;G-C content as a percentage;Numerical
+bp_length;Nucleotide sequence length in basepairs;Numerical
+Parent;Isolate ID record associated with the plasmid;Text
+ST;Isolate sequence type;Text
+Species;Isolate species;Text
+sampling_date;Isolate sampling date;Date (DD-MM-YYYY)
+submitter_municipality;Lower NUTS region level of record (Muncipality in reference);Text
+submitter_province;Higher NUTS region level of record (Province in reference);Text
+foreign_hospitalisation_history;Was the patient hospitalised abroad in <6 months of sampling;Text (Country name)
+healthcare_employee;Does the patient work in healthcare;Yes/No

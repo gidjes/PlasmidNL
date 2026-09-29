@@ -78,6 +78,45 @@ shiny-data
 ```
 
 ## Working with your own data
+### Uploading your own file
+You can use the [CSV template](upload_template) provided in this repository to upload and compare your own data in the dashboard.
+
+If you are working with your own plasmid genome sequences, the [PlasmidNL_typing repository](https://github.com/gidjes/PlasmidNL_typing) provides a pipeline for typing and annotating plasmid genomes in the same consistent format as the genomic data used in this dashboard. The resulting annotations can then be combined with the metadata in the [CSV template](upload_template.csv) provided in this repository.
+
+For help filling out the template, a [pre-filled example](upload_example_records.csv) containing a few reference records is provided in the repository. A [detailed description](upload_inputs_detailed.csv) of each metadata field, including the expected format and how each field is interpreted by the dashboard, is also available and is shown below.
+
+| Column name                       | Data description                                                                                                                                   | Data type (R) | Example record                 |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- | ------------------------------ |
+| `Plasmid`                         | Unique identifier for the plasmid record.                                                                                                          | `character`   | `PLASMID_00123`                |
+| `replicon`                        | Replicon type identified in the plasmid.                                                                                                           | `character`   | `IncFII`                       |
+| `replicon_family`                 | Replicon family or group to which the replicon belongs.                                                                                            | `character`   | `IncF`                         |
+| `mobility`                        | Predicted plasmid mobility category.                                                                                                               | `character`   | `conjugative`                  |
+| `mge_cluster`                     | Cluster identifier from mge-cluster scheme.                                                                                           | `character`   | `26`                     |
+| `tsne1D`                          | Coordinate of the plasmid on the first t-SNE dimension.                                                                                            | `numeric`     | `12.47`                        |
+| `tsne2D`                          | Coordinate of the plasmid on the second t-SNE dimension.                                                                                           | `numeric`     | `-3.82`                        |
+| `amr`                             | Antibiotic resistance genes detected in the plasmid. Enter multiple genes as a comma-separated list. Leave empty if no genes were detected.        | `character`   | `blaKPC-2,aac(6')-Ib-cr`    |
+| `amr_classes`                     | Antibiotic classes for which resistance genes were detected. Enter multiple classes as a comma-separated list. Leave empty if none were detected.  | `character`   | `beta-lactam,aminoglycoside` |
+| `AMR_plasmid`                     | Indicates whether the plasmid is classified as an antimicrobial resistance (AMR) plasmid.                                                          | `numeric`     | `1`                         |
+| `carba_allele`                    | Carbapenem resistance genes or alleles detected in the plasmid. Enter multiple genes as a comma-separated list. Leave empty if none were detected. | `character`   | `blaKPC-2`                     |
+| `CP_plasmid`                      | Indicates whether the plasmid is classified as a carbapenem-resistance plasmid.                                                                    | `numeric`     | `1`                         |
+| `virulence`                       | Virulence-associated genes detected in the plasmid. Enter multiple genes as a comma-separated list. Leave empty if none were detected.             | `character`   | `iucC,iutA`                    |
+| `metal`                           | Metal resistance genes detected in the plasmid. Enter multiple genes as a comma-separated list. Leave empty if none were detected.                 | `character`   | `merC`                    |
+| `metal_classes`                   | Metals for which resistance was detected. Enter multiple metals as a comma-separated list. Leave empty if none were detected.                      | `character`   | `mercury`                |
+| `biocide`                         | Biocide resistance genes detected in the plasmid. Enter multiple genes as a comma-separated list. Leave empty if none were detected.               | `character`   | `qacE`                         |
+| `heat`                            | Heat resistance genes detected in the plasmid. Enter multiple genes as a comma-separated list. Leave empty if none were detected.                  | `character`   | `hsp20`                        |
+| `acid`                            | Acid resistance genes detected in the plasmid. Enter multiple genes as a comma-separated list. Leave empty if none were detected.                  | `character`   | `gadA,gadB`                    |
+| `GC_perc`                         | G+C content of the plasmid sequence, expressed as a percentage.                                                                                    | `numeric`     | `51.23`                        |
+| `bp_length`                       | Length of the plasmid nucleotide sequence in base pairs.                                                                                           | `integer`     | `85432`                        |
+| `Parent`                          | Identifier of the isolate record associated with the plasmid.                                                                                      | `character`   | `ISO_00456`                    |
+| `ST`                              | Sequence type (ST) of the associated isolate.                                                                                                      | `character`   | `131`                        |
+| `Species`                         | Species of the associated isolate.                                                                                                                 | `character`   | `Escherichia coli`             |
+| `sampling_date`                   | Date on which the associated isolate was sampled. Use the format `YYYY-MM-DD`.                                                                     | `Date`        | `2024-03-15`                   |
+| `submitter_municipality`          | Municipality associated with the submitting record, corresponding to the lower NUTS/local administrative level.                                    | `character`   | `Bilthoven`                      |
+| `submitter_province`              | Province associated with the submitting record, corresponding to the higher NUTS administrative level.                                             | `character`   | `Utrecht`                      |
+| `foreign_hospitalisation_history` | Country in which the patient was hospitalised within the 6 months preceding sampling. Leave empty if there was no foreign hospitalisation.         | `character`   | `Denmark`                      |
+| `healthcare_employee`             | Indicates whether the patient works in healthcare.                                                                                                 | `logical`     | `TRUE`                         |
+
+
 ### Using your own map
 The app uses an `sf` spatial file (GeoJSON, GeoPackage, shapefile, etc.) to draw the map layers.
 You can replace the default map of the Netherlands with your own regional map data by editing the configuration file.
@@ -128,8 +167,8 @@ MAP_TYPES:
 | regio_naam | regio_soort | geometry |
 | -------- | ------- | ------- |
 | Utrecht | province | POLYGON(...) |
-| Flevoland | province | POLYGON(...) |
-| Amsterdam | municipality | POLYGON(...) |
+| Noord-Brabant | province | POLYGON(...) |
+| Bilthoven | municipality | POLYGON(...) |
 | Meierijstad | municipality | POLYGON(...) |
 
 #### 3. Notes

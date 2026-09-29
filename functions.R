@@ -473,18 +473,25 @@ geo_plot_ly <- function(df, geo_df, geo_level, title, name, mge_cluster_in = "",
     config(responsive = TRUE)
   
   if (any(geo_counts$regio_soort == "rand")) {
+
     rand_labels <- subset(geo_df, regio_soort == "rand")
-  
-    for(i in seq_len(nrow(rand_labels))){
-      plot_ly <- plot_ly %>% add_annotations(
-        x = rand_labels$x[i],
-        y = rand_labels$y[i],
-        text = rand_labels$regio_naam[i],
-        showarrow = FALSE,
-        xanchor = "center",
-        yanchor = "bottom",
-        textfont = list(size=6)
-      )
+
+    for (i in seq_len(nrow(rand_labels))) {
+
+      # Bounding box of the inset box
+      bb_rand <- sf::st_bbox(rand_labels[i, ])
+
+      plot_ly <- plot_ly %>%
+        add_annotations(
+          x = (bb_rand["xmin"] + bb_rand["xmax"]) / 2,
+          y = bb_rand["ymin"],
+          text = rand_labels$regio_naam[i],
+          showarrow = FALSE,
+          xanchor = "center",
+          yanchor = "top",
+          yshift = -5,
+          textfont = list(size = 6)
+        )
     }
   }
   
@@ -710,7 +717,7 @@ frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = 
       filter(mge_cluster %in% mge_cluster_filter)
     x_val = column_name_y
     y_val = column_name_x
-    plot_height = 300
+    plot_height = 500
   } else {
     x_val = column_name_x
     y_val = column_name_y
@@ -721,7 +728,7 @@ frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = 
       unique()
     
     row_height <- 20
-    plot_height <- max(300, length(y_categories) * row_height)
+    plot_height <- max(500, length(y_categories) * row_height)
   }
   
 
@@ -754,8 +761,8 @@ frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = 
           ratio * 100
         )
       ),
-      color="#535353",
-      linewidth=0.1,
+      color="#060505",
+      linewidth=20,
       alpha=0.2,
       width=0.1
     ) +

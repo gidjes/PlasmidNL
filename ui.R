@@ -7,45 +7,43 @@ ui <- tagList(
   dashboardHeader(title = "PlasmidNL"),
   
   ## Define sidebar
+  # Upload field
   dashboardSidebar(
+    fileInput(
+      "userfile",
+      label = tags$span("Upload CSV file", `aria-label` = "Upload CSV file"),
+      accept = c(
+        "text/csv",
+        "text/comma-separated-values,text/plain",
+        ".csv"
+      )
+    ),
+    checkboxInput("header", "Header", TRUE),
     
-    # Upload field
-    dashboardSidebar(
-      fileInput(
-        "userfile",
-        label = tags$span("Upload CSV file", `aria-label` = "Upload CSV file"),
-        accept = c(
-          "text/csv",
-          "text/comma-separated-values,text/plain",
-          ".csv"
-        )
+    # Menu items
+    sidebarMenu(
+      menuItem("Home",
+                tabName = "home", icon = icon("home")
       ),
-      checkboxInput("header", "Header", TRUE),
-      
-      # Menu items
-      sidebarMenu(
-        menuItem("Home",
-                 tabName = "home", icon = icon("home")
-        ),
-        menuItem("All Clusters Overview",
-                 tabName = "genomes", icon = icon("dna"),
-                 menuSubItem("Overview", tabName = "genomes_overview"),
-                 menuSubItem("Plasmid types", tabName = "plasmid_type"),
-                 menuSubItem("AMR data", tabName = "AMR_data"),
-                 menuSubItem("Gene data", tabName = "genomic_gene_data"),
-                 menuSubItem("Time series", tabName = "time_series"),
-                 menuSubItem("mge tsne scatter", tabName = "tnse_scatter"),
-                 menuSubItem("interactive mge tsne", tabName = "tsne2")
-        ),
-        menuItem("Cluster in-depth",
-                 tabName = "Clusters", icon = icon("microscope"),
-                 menuSubItem("Isolate-level Overview", tabName = "isolate_overview"),
-                 menuSubItem("Genomic-level Overiew", tabName = "gen_overview"),
-                 menuSubItem("Metadata Sankey", tabName = "mge_cluster_tracing"),
-                 menuSubItem("Co-occurance", tabName = "mge_cluster_co_occurance"),
-                 menuSubItem("Cluster Table", tabName = "mge_cluster_data")
-        )
-      ))),
+      menuItem("All Clusters Overview",
+                tabName = "genomes", icon = icon("dna"),
+                menuSubItem("Overview", tabName = "genomes_overview"),
+                menuSubItem("Plasmid types", tabName = "plasmid_type"),
+                menuSubItem("AMR data", tabName = "AMR_data"),
+                menuSubItem("Gene data", tabName = "genomic_gene_data"),
+                menuSubItem("Time series", tabName = "time_series"),
+                menuSubItem("mge tsne scatter", tabName = "tnse_scatter"),
+                menuSubItem("interactive mge tsne", tabName = "tsne2")
+      ),
+      menuItem("Cluster in-depth",
+                tabName = "Clusters", icon = icon("microscope"),
+                menuSubItem("Isolate-level Overview", tabName = "isolate_overview"),
+                menuSubItem("Genomic-level Overiew", tabName = "gen_overview"),
+                menuSubItem("Metadata Sankey", tabName = "mge_cluster_tracing"),
+                menuSubItem("Co-occurance", tabName = "mge_cluster_co_occurance"),
+                menuSubItem("Cluster Table", tabName = "mge_cluster_data")
+      )
+    )),
   
   ## Define the actual content
   dashboardBody(
