@@ -11,7 +11,7 @@ required_packages <- c(
   "shinyWidgets", "flexdashboard",
   
   # Data manipulation
-  "tidyverse", "data.table", "lubridate", "reshape2",
+  "tidyverse", "data.table", "lubridate", "reshape2", "terra",
   
   # Visualization
   "ggplot2", "cowplot", "plotly", "DT", "leaflet",
@@ -44,19 +44,19 @@ if (length(missing_packages) > 0) {
 if (!requireNamespace("remotes", quietly = TRUE)) {
   install.packages("remotes")
 }
-if (!requireNamespace("DARAvis", quietly = TRUE)) {
-  remotes::install_gitlab("dara/DARAvis@main", host = "https://gitlab.rivm.nl", build = FALSE)
-}
+# if (!requireNamespace("DARAvis", quietly = TRUE)) {
+#   remotes::install_gitlab("dara/DARAvis@main", host = "https://gitlab.rivm.nl", build = FALSE)
+# }
 
 # Load packages
 invisible(lapply(required_packages, library, character.only = TRUE))
-library(DARAvis)
+# library(DARAvis)
 # Source imports
 source("functions.R")
 
-if (.Platform$OS.type == "windows") {
-  windowsFonts(Verdana=windowsFont("Verdana"))
-}
+# if (.Platform$OS.type == "windows") {
+#   windowsFonts(Verdana=windowsFont("Verdana"))
+# }
 
 
 

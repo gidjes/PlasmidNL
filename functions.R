@@ -2,9 +2,9 @@
 create_palettes <- function(metadata, categorical_colors) {
   numerical_palette <- c(
     "#FFFFFF",
-    palette_rivm("full")[1],
-    palette_rivm("categorical")[2],
-    palette_rivm("categorical")[3]
+    "#2602c6",
+    "#bc1d1d",
+    "#d7c131"
   )
   
   mge_cluster_palette <- custom_hierarchical_palette(metadata, "mge_cluster", "mge_cluster", categorical_colors)
@@ -425,16 +425,24 @@ geo_plot_ly <- function(df, geo_df, geo_level, title, name, mge_cluster_in = "",
   }
   
   gg_plot <- gg_plot +
-    geom_sf(data = filter(geo_counts, regio_soort != "rand"),
-            aes(fill = n_isolates,
-                text = sprintf(str_glue("Location: %s<br>{name} (<i>n</i>): {number_display}"),
-                               regio_naam, n_isolates)),
-            linewidth = 0.1) +
-    theme_ggrivm() +
+    geom_sf(
+      data = filter(geo_counts, regio_soort != "rand"),
+      aes(
+        fill = n_isolates,
+        text = sprintf(
+          "Location: %s<br>%s (<i>n</i>): %s",
+          regio_naam,
+          name,
+          sprintf(number_display, n_isolates)
+        )
+      ),
+      linewidth = 0.1
+    ) +
+    # theme_ggrivm() +
     scale_fill_gradientn(colours=numerical_palette,
-                         values = rescale(c(0, rescale_factor, max_val * 0.5, max_val)),  # note: second value is just above 0
+                         values = scales::rescale(c(0, rescale_factor, max_val * 0.5, max_val)),  # note: second value is just above 0
                          limits = c(0, max_val), # ensures 0 is on the scale
-                         na.value="transparent",
+                         na.value="transparent"
     ) +
     #geom_text(
     #  data = subset(geo_df, regio_soort %in% c("rand")),
@@ -459,6 +467,7 @@ geo_plot_ly <- function(df, geo_df, geo_level, title, name, mge_cluster_in = "",
     coord_sf(clip = "off")
   
   bb <- sf::st_bbox(geo_df)
+
   plot_ly <- ggplotly(gg_plot, tooltip = "text") %>%
     style(hoveron=style_name) %>%
     config(responsive = TRUE)
@@ -479,11 +488,11 @@ geo_plot_ly <- function(df, geo_df, geo_level, title, name, mge_cluster_in = "",
     }
   }
   
-  plot_ly <- plot_ly %>%
-    layout(
-      xaxis = list(autorange = TRUE),
-      yaxis = list(autorange = TRUE)
-    )
+  # plot_ly <- plot_ly %>%
+  #   layout(
+  #     xaxis = list(autorange = TRUE),
+  #     yaxis = list(autorange = TRUE)
+  #   )
   return(plot_ly)
 }
 
@@ -524,7 +533,7 @@ categorical_bar <- function(df, column_name, colourlist, title, xlab) {
     #linewidth=ifelse(df$DataSource=="Reference", 0, 0.5),
     alpha=0.95,
     ) +
-    theme_ggrivm() +
+    # theme_ggrivm() +
     labs(title = str_glue("{title} by mge_cluster"), y = "Ratio", x = xlab) +
     scale_fill_manual(values=colourlist, na.value="#FFFFFF") +
     scale_color_manual(
@@ -631,7 +640,7 @@ count_bar <- function(df, column_name, title, xlab, none_string="-") {
     scale_fill_custom_discrete(n = length(levels(count)), color_list=numerical_palette) +
     scale_color_manual(values=c("Reference only" = "#b4b4b4", "Contains upload" = "grey17")) +
     scale_linewidth_manual(values=c("Reference only" = 0.1, "Contains upload" = 1)) +
-    theme_ggrivm() +
+    # theme_ggrivm() +
     theme(
       legend.position = "bottom",
       legend.text = element_text(size = 12),
@@ -754,7 +763,7 @@ frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = 
                          limits=c(0, 1)
     ) +
     labs(title = str_glue("{title} by mge_cluster"), y = y_val, x = x_val) +
-    theme_ggrivm()  +
+    # theme_ggrivm()  +
     theme(
       legend.position = "bottom",
       legend.text = element_text(size = 12),
@@ -770,14 +779,36 @@ frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = 
   return(plot_ly)
 }
 
-ellips_scatter <- function(df, column_name="mge_cluster") {
+wrap_label <- function(x, width) {
+  if (is.null(width)) return(x)
+  vapply(x, function(s) {
+    words <- strsplit(s, " ", fixed = TRUE)[[1]]
+    out <- character(0); line <- ""; line_len <- 0
+    for (w in words) {
+      w_len <- nchar(gsub("<[^>]+>", "", w))      # visible length only
+      if (line_len > 0 && line_len + 1 + w_len > width) {
+        out <- c(out, line); line <- w; line_len <- w_len
+      } else {
+        line <- if (line_len == 0) w else paste(line, w)
+        line_len <- line_len + (if (line_len == 0) 0 else 1) + w_len
+      }
+    }
+    paste(c(out, line), collapse = "<br>")
+  }, character(1), USE.NAMES = FALSE)
+}
+
+ellips_scatter <- function(df, column_name = "mge_cluster", legend_wrap = 20) {
   df <- df %>%
     filter(mge_cluster != "-") %>%
-    mutate(tsne1D = ifelse(tsne1D %in% c("", "-"), NA, as.numeric(tsne1D))) %>%
-    mutate(tsne2D = ifelse(tsne2D %in% c("", "-"), NA, as.numeric(tsne2D)))
+    mutate(
+      tsne1D = ifelse(tsne1D %in% c("", "-"), NA, as.numeric(tsne1D)),
+      tsne2D = ifelse(tsne2D %in% c("", "-"), NA, as.numeric(tsne2D)),
+      # explicit category label, used for legend grouping and hover text
+      .cat = ifelse(is.na(.data[[column_name]]), "NA", as.character(.data[[column_name]]))
+    )
   df_mge_clusters <- df %>%
     filter(mge_cluster != "-1")
-  # mge tsne scatterplot
+  
   gg_plot <- df %>%
     ggplot() +
     stat_ellipse(
@@ -793,8 +824,9 @@ ellips_scatter <- function(df, column_name="mge_cluster") {
       aes(
         x = tsne1D,
         y = tsne2D,
-        color = mge_cluster
-      ),
+        color = mge_cluster,
+        text = paste0("mge_cluster: ", mge_cluster)
+      )
     ) +
     geom_point(
       aes(
@@ -802,72 +834,79 @@ ellips_scatter <- function(df, column_name="mge_cluster") {
         y = tsne2D,
         fill = !!sym(column_name),
         shape = DataSource,
+        text = paste0(
+          .cat,
+          "<br>DataSource: ", DataSource,
+          "<br>mge_cluster: ", mge_cluster
+        )
       ),
-      color = ifelse(df$DataSource=="Reference", "grey100", "black"),
-      stroke = ifelse(df$DataSource=="Reference", 0, 0.5),
-      alpha=0.65
+      color = ifelse(df$DataSource == "Reference", "grey100", "black"),
+      stroke = ifelse(df$DataSource == "Reference", 0, 0.5),
+      alpha = 0.65
     ) +
-    scale_color_manual(
-      values = mge_cluster_palette,  # this will control the ellipse outlines
-      #aesthetics = "color"      # specifically for the stat_ellipse layer
-      guide="none"
+    scale_color_manual(values = mge_cluster_palette, guide = "none") +
+    scale_shape_manual(values = c("Reference" = 21, "UserUpload" = 24), guide = "none") +
+    labs(
+      title = str_glue("tSNE-coordinate scatterplot of mge_clustered plasmids\nColoured by {column_name}"),
+      y = "tsne2D", x = "tsne1D"
     ) +
-    scale_shape_manual(
-      values = c("Reference" = 21, "UserUpload" = 24),
-      guide = "none"
-    ) +
-    labs(title = str_glue("tSNE-coordinate scatterplot of mge_clustered plasmids\nColoured by {column_name}"), y = "tsne2D", x = "tsne1D") +
-    theme_ggrivm() +
     theme(
       legend.position = "bottom",
       legend.text = element_text(size = 12),
       axis.text.x = element_text(angle = 45, hjust = 1),
       legend.key.size = unit(0.7, "cm"),
-      plot.title = element_text(size= 12, color="black", face = "plain")
+      plot.title = element_text(size = 12, color = "black", face = "plain")
     ) +
     guides(fill = guide_legend(title = column_name))
   
   gg_plot <- add_palette(gg_plot, column_name, df)
-
-  plot_ly <- ggplotly(gg_plot) %>%
-    layout(
-      showlegend = TRUE
-    )
   
-  df_legend <- data.frame(
-    id = seq_along(plot_ly$x$data),
-    legend_entries = unlist(lapply(plot_ly$x$data, `[[`, "name")),
-    stringsAsFactors = FALSE
-  )
-  keep_groups <- unique(df[[column_name]])
-  # Split each legend entry into components
-  df_legend$components <- strsplit(df_legend$legend_entries, ",")
+  # "text" aesthetic warnings for geoms that don't know it are expected
+  plot_ly <- suppressWarnings(ggplotly(gg_plot, tooltip = "text")) %>%
+    layout(showlegend = TRUE)
   
-  # Clean parentheses and whitespace
-  df_legend$components <- lapply(df_legend$components, function(x) gsub("^\\(|\\)$", "", trimws(x)))
+  seen_groups <- character(0)
   
-  if (column_name == "mge_cluster") {
-    df_legend$components <- lapply(df_legend$components, function(x) gsub("^1$|^, 1$", "", x[x != ""]))
-  }
-  
-  # Determine which legend entries to keep based on the column values
-  df_legend$is_keep <- sapply(df_legend$components, function(x) any(x %in% keep_groups))
-  
-  # Determine the label to show in the legend (e.g., the intersection with keep_groups)
-  df_legend$legend_group <- sapply(df_legend$components, function(x) paste(x[x %in% keep_groups], collapse = ","))
-  df_legend$is_first <- !duplicated(df_legend$legend_group)
-  
-  # Update plotly traces
-  for (i in df_legend$id) {
-    group <- df_legend$legend_group[[i]]
-    is_first <- df_legend$is_first[[i]]
-    is_keep <- df_legend$is_keep[[i]]
+  for (i in seq_along(plot_ly$x$data)) {
+    tr   <- plot_ly$x$data[[i]]
+    mode <- if (is.null(tr$mode)) "" else tr$mode
     
-    plot_ly$x$data[[i]]$name <- group
-    plot_ly$x$data[[i]]$legendgroup <- group
-    plot_ly$x$data[[i]]$showlegend <- is_first && is_keep
+    if (grepl("markers", mode)) {
+      txt <- tr$text
+      if (is.null(txt) || length(txt) == 0) next
+      cat_i <- sub("<br>.*$", "", as.character(txt[[1]]))
+      
+      plot_ly$x$data[[i]]$name        <- wrap_label(cat_i, legend_wrap)
+      plot_ly$x$data[[i]]$legendgroup <- cat_i
+      plot_ly$x$data[[i]]$showlegend  <- !(cat_i %in% seen_groups)
+      seen_groups <- c(seen_groups, cat_i)
+    } else if (grepl("lines", mode)) {
+      # ---- ellipse trace: always visible, never in legend, hoverable ----
+      if (is.null(tr$text)) {
+        plot_ly$x$data[[i]]$text <- paste0("mge_cluster: ", tr$name)
+      }
+      plot_ly$x$data[[i]]$showlegend  <- FALSE
+      plot_ly$x$data[[i]]$legendgroup <- NULL   # not tied to any legend item
+      plot_ly$x$data[[i]]$fill        <- "toself"
+      plot_ly$x$data[[i]]$fillcolor   <- "rgba(0,0,0,0)"  # invisible, but hoverable
+      plot_ly$x$data[[i]]$hoveron     <- "fills+points"
+      plot_ly$x$data[[i]]$hoverinfo   <- "text"
+    }
   }
-  return(plot_ly)
+  plot_ly %>%
+    layout(
+      showlegend = TRUE,
+      legend = list(
+        orientation = "h",
+        x = 0, xanchor = "left",
+        y = -0.3, yanchor = "top",
+        title = list(text = paste0(column_name, ": ")),
+        font = list(size = 12),
+        entrywidthmode = "fraction",
+        entrywidth = 0                # each entry sized to its own text
+      ),
+      margin = list(r = 20, b = 150)
+    )
 }
 
 categorical_time_series <- function(df, mge_cluster_filter, column) {
@@ -887,7 +926,7 @@ categorical_time_series <- function(df, mge_cluster_filter, column) {
       )
     ) +
     geom_col(alpha = 0.8) +
-    theme_ggrivm() +
+    # theme_ggrivm() +
     theme(
       legend.position = "bottom",
       legend.text = element_text(size = 12),
@@ -1001,11 +1040,10 @@ basics = c("#007bc7", "#ca005d", "#552c6f")
 
 numerical_palette <- c(
   "#FFFFFF",
-  palette_rivm("full")[1],
-  palette_rivm("categorical")[2],
-  palette_rivm("categorical")[3]
+  "#2602c6",
+  "#bc1d1d",
+  "#d7c131"
 )
-
 # mge_cluster
 mge_cluster_palette <- custom_hierarchical_palette(metadata, "mge_cluster", "mge_cluster", categorical_colors)$main_palette
 

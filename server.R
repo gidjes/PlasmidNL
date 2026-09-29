@@ -75,7 +75,7 @@ server <- function(input, output, session) {
     ggplot(aes(x = mge_cluster)) +
     geom_bar(fill = "#154273", colour="#b4b4b4", linewidth=0.2, alpha=0.9) +
     labs(y = "Count (n)", x = "mge_cluster") +
-    theme_ggrivm() +
+    # theme_ggrivm() +
     theme(
       legend.position = "bottom",
       axis.text.x = element_text(angle = 45, hjust = 1),
@@ -95,7 +95,7 @@ server <- function(input, output, session) {
                  alpha=0.9,
     ) +
     labs(y = "GC Content (%)", x = "mge_cluster") +
-    theme_ggrivm() +
+    # theme_ggrivm() +
     theme(
       legend.position = "bottom",
       axis.text.x = element_text(angle = 45, hjust = 0.5),
@@ -115,7 +115,7 @@ server <- function(input, output, session) {
     ) +
     labs( y = "Sequence length (bp)", x = "mge_cluster") +
     scale_y_log10(labels = scales::label_number()) +
-    theme_ggrivm() +
+    # theme_ggrivm() +
     theme(
       legend.position = "bottom",
       axis.text.x = element_text(angle = 45, hjust = 1),
@@ -312,7 +312,7 @@ server <- function(input, output, session) {
         y = "Count",
         color = input$subgrouping
       ) +
-      theme_ggrivm()
+      # theme_ggrivm()
     
     time_series <- add_palette_colour(time_series, input$subgrouping, metadata)
     
@@ -518,7 +518,7 @@ server <- function(input, output, session) {
         x = input$subdivision,
         y = input$co_occur
       ) +
-      theme_ggrivm()  +
+      # theme_ggrivm()  +
       theme(
         legend.position = "bottom",
         legend.text = element_text(size = 12),
