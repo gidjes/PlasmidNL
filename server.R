@@ -1,4 +1,24 @@
 server <- function(input, output, session) {
+  # Keep the two inputs in sync
+  observeEvent(input$mge_cluster_over_gen, {
+    if (!identical(input$mge_cluster_over_gen, input$mge_cluster_over_iso)) {
+      updateSelectInput(session, "mge_cluster_over_iso",
+                        selected = input$mge_cluster_over_gen)
+    }
+  }, ignoreInit = TRUE)
+
+  observeEvent(input$mge_cluster_over_iso, {
+    if (!identical(input$mge_cluster_over_iso, input$mge_cluster_over_gen)) {
+      updateSelectInput(session, "mge_cluster_over_gen",
+                        selected = input$mge_cluster_over_iso)
+    }
+  }, ignoreInit = TRUE)
+
+  # Single source of truth for the rest of your code
+  selected_cluster <- reactive({
+    input$mge_cluster_over_gen   # both are identical after syncing
+  })
+
   # Reactive dataset used globally
   expand_data <- reactive({
     if (is.null(input$userfile)) {
@@ -45,6 +65,7 @@ server <- function(input, output, session) {
     
   }, ignoreInit = FALSE)
   
+
   # mge_cluster data
   output$mge_cluster_table <- renderDT({
     selected_mge_cluster <- input$mge_cluster_select
@@ -440,7 +461,7 @@ server <- function(input, output, session) {
                  "mge_cluster",
                  str_glue("Ratio of Occurance of Resistence to Antibiotic Classes "),
                  "-",
-                 mge_cluster_filter=input$mge_cluster_over
+                 mge_cluster_filter=input$mge_cluster_over_gen
     )
   })
   
@@ -450,7 +471,7 @@ server <- function(input, output, session) {
                  "mge_cluster",
                  str_glue("Ratio of ARG Occurance in mge_cluster"),
                  "-",
-                 mge_cluster_filter=input$mge_cluster_over
+                 mge_cluster_filter=input$mge_cluster_over_gen
     )
   })
   
@@ -460,15 +481,15 @@ server <- function(input, output, session) {
                  "mge_cluster",
                  str_glue("Ratio of Metal Resistance Genes in mge_cluster"),
                  "-",
-                 mge_cluster_filter=input$mge_cluster_over
+                 mge_cluster_filter=input$mge_cluster_over_gen
     )
   })
   
-  output$PlasmidMap <- renderPlotly({geo_plot_ly(metadata, nl_municiple_map, "submitter_municipality", "Number of plasmids received\n of this mge_cluster by municipality", "Plasmids", input$mge_cluster_over)})
-  output$PopulationMap <- renderPlotly({geo_plot_ly(metadata, nl_municiple_map, "submitter_municipality", "Fraction of isolates with plasmids\n of this mge_cluster by municipality", "Plasmids", input$mge_cluster_over, TRUE)})
-  output$mge_clusterTimeSeries <- renderPlotly({categorical_time_series(metadata, input$mge_cluster_over, input$group_col)})
-  output$SpeciesDistribution <- renderPlotly({treemap(metadata, "Species", "Genus", input$mge_cluster_over, c(genus_palette, species_palette))})
-  output$RepliconDistribution <- renderPlotly({treemap(metadata, "replicon", "replicon_family", input$mge_cluster_over, c(rep_family_palette, rep_palette))})
+  output$PlasmidMap <- renderPlotly({geo_plot_ly(metadata, nl_municiple_map, "submitter_municipality", "Number of plasmids received\n of this mge_cluster by municipality", "Plasmids", input$mge_cluster_over_iso)})
+  output$PopulationMap <- renderPlotly({geo_plot_ly(metadata, nl_municiple_map, "submitter_municipality", "Fraction of isolates with plasmids\n of this mge_cluster by municipality", "Plasmids", input$mge_cluster_over_iso, TRUE)})
+  output$mge_clusterTimeSeries <- renderPlotly({categorical_time_series(metadata, input$mge_cluster_over_iso, input$group_col)})
+  output$SpeciesDistribution <- renderPlotly({treemap(metadata, "Species", "Genus", input$mge_cluster_over_iso, c(genus_palette, species_palette))})
+  output$RepliconDistribution <- renderPlotly({treemap(metadata, "replicon", "replicon_family", input$mge_cluster_over_iso, c(rep_family_palette, rep_palette))})
   
   
   output$mge_clusterComge_cluster <- renderPlotly({

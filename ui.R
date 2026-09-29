@@ -245,7 +245,7 @@ ui <- tagList(
         fluidRow(
           box(
             width = 12,
-            selectInput("mge_cluster_over",
+            selectInput("mge_cluster_over_iso",
                         label="Select cluster",
                         choices=unique(metadata$mge_cluster),
                         selected = "13",
@@ -300,7 +300,7 @@ ui <- tagList(
         fluidRow(
           box(
             width = 12,
-            selectInput("mge_cluster_over",
+            selectInput("mge_cluster_over_gen",
                         label="Select cluster",
                         choices=unique(metadata$mge_cluster),
                         selected = "13",
