@@ -44,9 +44,7 @@ if (length(missing_packages) > 0) {
 if (!requireNamespace("remotes", quietly = TRUE)) {
   install.packages("remotes")
 }
-# if (!requireNamespace("DARAvis", quietly = TRUE)) {
-#   remotes::install_gitlab("dara/DARAvis@main", host = "https://gitlab.rivm.nl", build = FALSE)
-# }
+
 
 # Load packages
 invisible(lapply(required_packages, library, character.only = TRUE))
@@ -64,7 +62,6 @@ source("functions.R")
 here::i_am("global.R")
 config <- config::get()
 metadata_path <- config$METADATA_FILE
-print(metadata_path)
 dfs <- open_metadata(str_glue("{metadata_path}", sep=""), "Reference")
 metadata <- dfs[[1]]
 parent_df <- dfs[[2]]
