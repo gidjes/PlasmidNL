@@ -115,7 +115,8 @@ open_metadata <- function(path, source) {
            Genus = sub(" .*$", "", Species),
            submitter_province = str_replace(submitter_province, "eilanden", "islands"),
            AMR_plasmid = ifelse(AMR_plasmid == 1, "Yes", "No"),
-           CP_plasmid = ifelse(CP_plasmid == 1, "Yes", "No")
+           CP_plasmid = ifelse(CP_plasmid == 1, "Yes", "No"),
+           ST = ifelse(ST == "" | is.na(ST), "Unknown", ST)
     ) %>%
     ## Update the Italic columns
     mutate(

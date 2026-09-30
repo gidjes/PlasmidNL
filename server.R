@@ -344,7 +344,7 @@ server <- function(input, output, session) {
         x = "Year",
         y = "Count",
         color = input$subgrouping
-      ) +
+      )
       # theme_ggrivm()
     
     time_series <- add_palette_colour(time_series, input$subgrouping, metadata)
@@ -361,6 +361,7 @@ server <- function(input, output, session) {
         )
       ) %>%
       config(responsive = TRUE)
+      return(interactive_time_series)
   })
   
   output$mge_clusterTracing <- renderPlotly({
