@@ -16,19 +16,31 @@ A template csv to upload your own data to compare, as well as a pipeline to type
 
 ## Installation
 
-The following steps should be taken to install our project.
-
-Clone the repository and change directory
+Clone the repository and change to the project directory:
 
 ```bash
     git clone https://gitlab.com/gidjes/plasmidnl.git
     cd PlasmidNL
 ```
 
+The project uses ```renv``` to manage its R package dependencies and versions.
+
+Open the project in R/RStudio. If ```renv``` is not already installed, install it once and then restore the project environment from the lockfile::
+
+```R
+install.packages("renv")
+library(renv)
+renv::restore()
+```
+
+This will install the package versions specified in renv.lock and recreate the project's R package environment.
+
+
 ## Running the Application
 
 ### 1. Open R / RStudio and install shiny
 
+Once the renv environment has been restored, the application can be run as usual.
 Open Rstudio (recommended) and ensure your working directory is set to project root:
 
 ```R
@@ -36,23 +48,13 @@ setwd("path/to/PlasmidNL")
 install.packages(c("shiny"))
 ```
 
-### 2. Open global.R
-
-The global.R script contains all the necessary code to run the application. In addition
-it will tell your R / RStudio to install all required packages / dependencies. No manual
-installation is required. Simply select 'Run App' in the top corner of your RStudio or
-run either:
-
-#### From Rstudio
-```R
-shiny::runApp()
-```
+### 2. In Rstudio
+Open the projects ```global.R``` script in RStudio and select Run App.
 
 #### From R console
-
 In the project root:
 ```R
-shiny::runApp(.)
+shiny::runApp()
 ```
 
 ## Application Structure

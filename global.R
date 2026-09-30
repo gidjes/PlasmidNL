@@ -32,20 +32,6 @@ required_packages <- c(
   "stringr"
 )
 
-# Install missing packages
-missing_packages <- required_packages[
-  !required_packages %in% installed.packages()[, "Package"]
-]
-
-if (length(missing_packages) > 0) {
-  install.packages(missing_packages)
-}
-
-if (!requireNamespace("remotes", quietly = TRUE)) {
-  install.packages("remotes")
-}
-
-
 # Load packages
 invisible(lapply(required_packages, library, character.only = TRUE))
 # Source imports
