@@ -26,7 +26,7 @@ required_packages <- c(
   "collapsibleTree", "htmlwidgets",
   
   # I/O / external data
-  "here", "readr", "jsonlite", "rentrez", "cbsodataR",
+  "here", "readr", "jsonlite", "rentrez", "config",
   
   # Explicit tidyverse components you loaded
   "stringr"
@@ -48,14 +48,8 @@ if (!requireNamespace("remotes", quietly = TRUE)) {
 
 # Load packages
 invisible(lapply(required_packages, library, character.only = TRUE))
-# library(DARAvis)
 # Source imports
 source("functions.R")
-
-# if (.Platform$OS.type == "windows") {
-#   windowsFonts(Verdana=windowsFont("Verdana"))
-# }
-
 
 
 # Load (main) data
@@ -107,4 +101,3 @@ selectable_cols <- c(
   "amr","amr_classes","AMR_plasmid","carba_allele", 
   "CP_plasmid", "metal", "virulence", "sampling_source", "sampling_OH_domain", "DataSource", "Institute"
 )
-

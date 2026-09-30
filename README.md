@@ -64,7 +64,7 @@ The application contains several modules / Rscripts to run the application:
 - **server.R**      -->     Defines the server plotting and data manipulation
 - **functions.R**   -->     Additional helper functions used in the application
 
-In addition two additional files are used as data input in the application:
+In addition, two files are used as data input in the application:
 - **metadata.csv**              --> contains the data that is visualised
 - **NLenBESenCAS_2024.json**    --> contains the map coordinate data
 
@@ -114,7 +114,7 @@ For help filling out the template, a [pre-filled example](upload_example_records
 | `submitter_municipality`          | Municipality associated with the submitting record, corresponding to the lower NUTS/local administrative level.                                    | `character`   | `Bilthoven`                      |
 | `submitter_province`              | Province associated with the submitting record, corresponding to the higher NUTS administrative level.                                             | `character`   | `Utrecht`                      |
 | `foreign_hospitalisation_history` | Country in which the patient was hospitalised within the 6 months preceding sampling. Leave empty if there was no foreign hospitalisation.         | `character`   | `Denmark`                      |
-| `healthcare_employee`             | Indicates whether the patient works in healthcare.                                                                                                 | `logical`     | `TRUE`                         |
+| `healthcare_employee`             | Indicates whether the patient works in healthcare.                                                                                                 | `logical`     | `1`                         |
 
 
 ### Using your own map

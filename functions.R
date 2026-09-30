@@ -398,7 +398,7 @@ geo_plot_ly <- function(df, geo_df, geo_level, title, name, mge_cluster_in = "",
   
   if (fractionalise==TRUE) {
     sample_counts <- sample_counts %>%
-      merge(., sample_count_population, by.x = "submitter_municipality", by.y = "submitter_municipality") %>%
+      base::merge(., sample_count_population, by.x = "submitter_municipality", by.y = "submitter_municipality") %>%
       mutate(n_isolates = ((n_isolates / n_plasmids) * 100))
     rescale_factor = 0.001
   } else {
@@ -741,7 +741,7 @@ frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = 
     distinct() %>%
     group_by(!!sym(column_name_y), !!sym(column_name_x)) %>%
     summarise(count = n()) %>%
-    merge(., category_table_df, by = column_name_x) %>%
+    base::merge(., category_table_df, by = column_name_x) %>%
     mutate(ratio = (count / total),
            !!sym(column_name_y) := factor(!!sym(column_name_y), levels = sort(unique(!!sym(column_name_y)), decreasing=TRUE))
     ) %>%
@@ -761,8 +761,8 @@ frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = 
           ratio * 100
         )
       ),
-      color="#060505",
-      linewidth=20,
+      color="#535353",
+      linewidth=0.1,
       alpha=0.2,
       width=0.1
     ) +
