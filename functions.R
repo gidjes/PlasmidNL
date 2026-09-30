@@ -1083,7 +1083,7 @@ ellips_scatter <- function(df, column_name = "mge_cluster") {
     )
   }
 
-  plot_ly %>%
+  plot_ly <- plot_ly %>%
     layout(
       showlegend = TRUE,
       margin = list(t=60),
@@ -1097,6 +1097,8 @@ ellips_scatter <- function(df, column_name = "mge_cluster") {
         font = list(size = 10) 
       )
     )
+
+    return(plot_ly)
 }
 
 categorical_time_series <- function(df, mge_cluster_filter, column) {

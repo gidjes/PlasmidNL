@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1230 1348">
+  <!-- Generator: Adobe Illustrator 30.3.0, SVG Export Plug-In . SVG Version: 2.1.3 Build 182)  -->
+  <defs>
+    <style>
+      .st0, .st1, .st2, .st3, .st4, .st5, .st6, .st7, .st8, .st9, .st10, .st11, .st12, .st13, .st14, .st15, .st16, .st17 {
+        stroke-miterlimit: 4;
+      }
+
+      .st0, .st1, .st2, .st4, .st6, .st7, .st8, .st9, .st10, .st11, .st12, .st13, .st14, .st15, .st16, .st17 {
+        stroke-width: 2px;
+      }
+
+      .st0, .st6 {
+        stroke: #a78bfa;
+      }
+
+      .st0, .st11 {
+        fill: #fdf4ff;
+      }
+
+      .st1 {
+        fill: #e0e7ff;
+      }
+
+      .st1, .st12, .st15 {
+        stroke: #818cf8;
+      }
+
+      .st2 {
+        fill: #fff1f2;
+        stroke: #fb7185;
+      }
+
+      .st3 {
+        fill: none;
+      }
+
+      .st3, .st5 {
+        stroke: #000;
+        stroke-width: 3px;
+      }
+
+      .st4 {
+        stroke: #22d3ee;
+      }
+
+      .st4, .st10 {
+        fill: #ecfeff;
+      }
+
+      .st18 {
+        font-size: 21.99px;
+      }
+
+      .st18, .st19, .st20 {
+        isolation: isolate;
+      }
+
+      .st18, .st20 {
+        font-family: Helvetica, Helvetica;
+      }
+
+      .st6 {
+        fill: #f5f3ff;
+      }
+
+      .st19 {
+        font-family: Helvetica-Bold, Helvetica;
+        font-size: 25.99px;
+        font-weight: 700;
+      }
+
+      .st7 {
+        fill: #f0fdf4;
+        stroke: #4ade80;
+      }
+
+      .st8 {
+        fill: #fefce8;
+        stroke: #facc15;
+      }
+
+      .st20 {
+        font-size: 17.99px;
+      }
+
+      .st9 {
+        fill: #e0f2fe;
+        stroke: #0ea5e9;
+      }
+
+      .st10 {
+        stroke: #38bdf8;
+      }
+
+      .st11 {
+        stroke: #e879f9;
+      }
+
+      .st12 {
+        fill: #eef2ff;
+      }
+
+      .st13 {
+        fill: #dcfce7;
+        stroke: #22c55e;
+      }
+
+      .st14 {
+        fill: #fff7ed;
+        stroke: #fb923c;
+      }
+
+      .st15 {
+        fill: #f0f4ff;
+      }
+
+      .st16 {
+        fill: #f0fdfa;
+        stroke: #2dd4bf;
+      }
+
+      .st17 {
+        fill: #9be170;
+        stroke: #54793e;
+      }
+    </style>
+  </defs>
+  <g id="clust1">
+    <path class="st15" d="M31.13,333.1h615.82c6,0,12-6,12-12V17.99c0-6-6-12-12-12H31.13c-6,0-12,6-12,12v303.11c0,6,6,12,12,12"/>
+    <text class="st19" transform="translate(248.75 33.39)"><tspan x="0" y="0">Preprocessing</tspan></text>
+  </g>
+  <g id="clust11">
+    <path class="st16" d="M720.83,863.33h379.89c6,0,12-6,12-12V171.33c0-6-6-12-12-12h-379.89c-6,0-12,6-12,12v680c0,6,6,12,12,12"/>
+    <text class="st19" transform="translate(761.98 186.73)"><tspan x="0" y="0">Single Cluster Overview</tspan></text>
+  </g>
+  <g id="clust5">
+    <path class="st14" d="M721.72,142.61h378.1c6.44,0,12.89-6,12.89-12V27.45c0-6-6.44-12-12.89-12h-378.1c-6.44,0-12.89,6-12.89,12v103.17c0,6,6.44,12,12.89,12"/>
+    <text class="st19" transform="translate(776.4 39.05)"><tspan x="0" y="0">Landing Page (Home)</tspan></text>
+  </g>
+  <g id="clust6">
+    <path class="st6" d="M24.18,864.17h649.81c6,0,12-5.11,12-10.22v-487.63c0-5.11-6-10.22-12-10.22H24.18c-6,0-12,5.11-12,10.22v487.63c0,5.11,6,10.22,12,10.22"/>
+    <text class="st19" transform="translate(186.08 383.49)"><tspan x="0" y="0">All Clusters Visualisations</tspan></text>
+  </g>
+  <g id="clust13">
+    <path class="st9" d="M926.76,560.62h165.95c6,0,12-6,12-12V218.52c0-6-6-12-12-12h-165.95c-6,0-12,6-12,12v330.1c0,6,6,12,12,12"/>
+    <text class="st18" transform="translate(932.92 230.32)"><tspan x="0" y="0">Interactive Tabs</tspan></text>
+    <text class="st18" transform="translate(991.41 256.71)"><tspan x="0" y="0">      </tspan></text>
+  </g>
+  <g id="clust14">
+    <path class="st13" d="M728.82,855.33h360.89c6,0,12-6,12-12v-262.72c0-6-6-12-12-12h-360.89c-6,0-12,6-12,12v262.72c0,6,6,12,12,12"/>
+    <text class="st18" transform="translate(865.27 592.41)"><tspan x="0" y="0">Genomic</tspan></text>
+    <text class="st18" transform="translate(842.85 618.8)"><tspan x="0" y="0">Overview Tab</tspan></text>
+  </g>
+  <g id="clust7">
+    <path class="st0" d="M32.17,728.92h165.95c6,0,12-4.68,12-9.35v-306.93c0-4.68-6-9.35-12-9.35H32.17c-6,0-12,4.68-12,9.35v306.93c0,4.68,6,9.35,12,9.35"/>
+    <text class="st18" transform="translate(71.15 427.07)"><tspan x="0" y="0">Genomic</tspan></text>
+    <text class="st18" transform="translate(48.73 453.46)"><tspan x="0" y="0">Overview Tab</tspan></text>
+  </g>
+  <g id="clust8">
+    <path class="st12" d="M500.03,728.92h165.95c6,0,12-4.68,12-9.35v-306.93c0-4.68-6-9.35-12-9.35h-165.95c-6,0-12,4.68-12,9.35v306.93c0,4.68,6,9.35,12,9.35"/>
+    <text class="st18" transform="translate(543.9 427.07)"><tspan x="0" y="0">Plasmid</tspan></text>
+    <text class="st18" transform="translate(538.57 453.46)"><tspan x="0" y="0">Type Tab</tspan></text>
+  </g>
+  <g id="clust9">
+    <path class="st7" d="M266.1,728.92h165.95c6,0,12-4.68,12-9.35v-306.93c0-4.68-6-9.35-12-9.35h-165.95c-6,0-12,4.68-12,9.35v306.93c0,4.68,6,9.35,12,9.35"/>
+    <text class="st18" transform="translate(324.64 427.07)"><tspan x="0" y="0">AMR</tspan></text>
+    <text class="st18" transform="translate(305.26 453.46)"><tspan x="0" y="0">Data Tab</tspan></text>
+  </g>
+  <g id="clust10">
+    <path class="st8" d="M32.17,857.2h633.81c6,0,12-6,12-12v-91.37c0-6-6-12-12-12H32.17c-6,0-12,6-12,12v91.37c0,6,6,12,12,12"/>
+    <text class="st18" transform="translate(209.49 765.63)"><tspan x="0" y="0">Genomic and Temporal Tabs</tspan></text>
+  </g>
+  <g id="clust12">
+    <path class="st10" d="M728.82,560.62h165.95c6,0,12-6,12-12V218.52c0-6-6-12-12-12h-165.95c-6,0-12,6-12,12v330.1c0,6,6,12,12,12"/>
+    <text class="st18" transform="translate(734.78 230.32)"><tspan x="0" y="0">Epidemiological</tspan></text>
+    <text class="st18" transform="translate(745.38 256.71)"><tspan x="0" y="0">Overview Tab</tspan></text>
+  </g>
+  <g id="node1" pointer-events="visible">
+    <path class="st1" d="M196.58,61.18H47.62c-6,0-12,6-12,12v69.98c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-69.98c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(80.58 91.97)"><tspan x="0" y="0">Load Data</tspan></text>
+    <text class="st20" transform="translate(83.59 113.56)"><tspan x="0" y="0">(global.R,</tspan></text>
+    <text class="st20" transform="translate(74.1 135.16)"><tspan x="0" y="0">functions.R)</tspan></text>
+  </g>
+  <g id="node2" pointer-events="visible">
+    <path class="st7" d="M413.51,61.18h-148.96c-6,0-12,6-12,12v69.98c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-69.98c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(256.51 113.56)"><tspan x="0" y="0">Read Metadata CSV</tspan></text>
+  </g>
+  <g id="edge1">
+    <path class="st3" d="M209.39,108.37h22.63"/>
+    <polygon class="st5" points="232.03 103.12 247.02 108.37 232.03 113.61 232.03 103.12"/>
+  </g>
+  <g id="node3" pointer-events="visible">
+    <path class="st4" d="M630.45,61.18h-148.96c-6,0-12,6-12,12v69.98c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-69.98c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(490.45 102.77)"><tspan x="0" y="0">Data Cleaning &amp;</tspan></text>
+    <text class="st20" transform="translate(495.8 124.36)"><tspan x="0" y="0">Transformation</tspan></text>
+  </g>
+  <g id="edge2">
+    <path class="st3" d="M426.33,108.37h22.63"/>
+    <polygon class="st5" points="448.96 103.12 463.96 108.37 448.96 113.61 448.96 103.12"/>
+  </g>
+  <g id="node4" pointer-events="visible">
+    <path class="st11" d="M196.58,223.13H47.62c-6,0-12,6-12,12v69.98c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-69.98c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(49.58 275.52)"><tspan x="0" y="0">Generate Palettes</tspan></text>
+  </g>
+  <g id="edge3">
+    <path class="st3" d="M555.97,155.85v33.49H122.1v13.32"/>
+    <polygon class="st5" points="127.35 202.66 122.1 217.65 116.85 202.66 127.35 202.66"/>
+  </g>
+  <g id="node5" pointer-events="visible">
+    <path class="st8" d="M413.51,223.13h-148.96c-6,0-12,6-12,12v69.98c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-69.98c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(315.52 264.72)"><tspan x="0" y="0">Setup</tspan></text>
+    <text class="st20" transform="translate(271.01 286.31)"><tspan x="0" y="0">Geographic Data</tspan></text>
+  </g>
+  <g id="edge4">
+    <path class="st3" d="M209.39,270.32h22.63"/>
+    <polygon class="st5" points="232.03 265.07 247.02 270.32 232.03 275.57 232.03 265.07"/>
+  </g>
+  <g id="node6" pointer-events="visible">
+    <path class="st2" d="M630.45,223.13h-148.96c-6,0-12,6-12,12v69.98c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-69.98c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(523.47 264.72)"><tspan x="0" y="0">Initialize</tspan></text>
+    <text class="st20" transform="translate(509.47 286.31)"><tspan x="0" y="0">Server &amp; UI</tspan></text>
+  </g>
+  <g id="edge5">
+    <path class="st3" d="M426.33,270.32h22.63"/>
+    <polygon class="st5" points="448.96 265.07 463.96 270.32 448.96 275.57 448.96 265.07"/>
+  </g>
+  <g id="node7" pointer-events="visible">
+    <path class="st14" d="M1082.72,53.52h-335.9c-6,0-12,6-12,12v47.99c0,6,6,12,12,12h335.9c6,0,12-6,12-12v-47.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(771.74 94.9)"><tspan x="0" y="0">Isolate Geographic Distribution Map</tspan></text>
+  </g>
+  <g id="edge25">
+    <path class="st3" d="M677.98,150.37v-60.5s18.37,0,18.37,0"/>
+    <path class="st3" d="M677.98,150.37l-.24,93.39-34.27-.09"/>
+    <polygon class="st5" points="688.35 84.62 703.35 89.87 688.35 95.12 688.35 84.62"/>
+  </g>
+  <g id="node8" pointer-events="visible">
+    <path class="st0" d="M189.63,472.06H40.67c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(48.64 509.95)"><tspan x="0" y="0">Cluster Size Plot</tspan></text>
+  </g>
+  <g id="node21" data-comment="G1" pointer-events="visible">
+    <path class="st10" d="M886.28,275.3h-148.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(779.8 302.4)"><tspan x="0" y="0">Plasmid</tspan></text>
+    <text class="st20" transform="translate(767.79 323.99)"><tspan x="0" y="0">Count Map</tspan></text>
+  </g>
+  <g id="edge26">
+    <path class="st3" d="M555.97,318.27v17.82"/>
+    <polygon class="st5" points="561.22 335.83 555.97 350.83 550.72 335.83 561.22 335.83"/>
+  </g>
+  <g id="node9" pointer-events="visible">
+    <path class="st0" d="M189.63,559.03H40.67c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(67.64 586.13)"><tspan x="0" y="0">GC Content</tspan></text>
+    <text class="st20" transform="translate(70.14 607.72)"><tspan x="0" y="0">Distribution</tspan></text>
+  </g>
+  <g id="node10" pointer-events="visible">
+    <path class="st0" d="M189.63,647.37H40.67c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(73.29 674.46)"><tspan x="0" y="0">BP Length</tspan></text>
+    <text class="st20" transform="translate(70.14 696.05)"><tspan x="0" y="0">Distribution</tspan></text>
+  </g>
+  <g id="node11" pointer-events="visible">
+    <path class="st12" d="M657.49,472.06h-148.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(521.99 499.15)"><tspan x="0" y="0">Isolate Species</tspan></text>
+    <text class="st20" transform="translate(538 520.75)"><tspan x="0" y="0">Distribution</tspan></text>
+  </g>
+  <g id="node12" pointer-events="visible">
+    <path class="st12" d="M657.49,559.03h-148.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(500.5 596.92)"><tspan x="0" y="0">Replicon Distribution</tspan></text>
+  </g>
+  <g id="node13" pointer-events="visible">
+    <path class="st12" d="M657.49,646.01h-148.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(505.01 683.9)"><tspan x="0" y="0">Mobility Distribution</tspan></text>
+  </g>
+  <g id="node14" pointer-events="visible">
+    <path class="st7" d="M423.56,472.06h-148.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(278.07 509.95)"><tspan x="0" y="0">AMR Gene Count</tspan></text>
+  </g>
+  <g id="node15" pointer-events="visible">
+    <path class="st7" d="M423.56,559.03h-148.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(312.08 586.13)"><tspan x="0" y="0">AB Class</tspan></text>
+    <text class="st20" transform="translate(281.07 607.72)"><tspan x="0" y="0">Resistance Ratio</tspan></text>
+  </g>
+  <g id="node16" pointer-events="visible">
+    <path class="st7" d="M423.56,646.01h-148.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(282.56 673.1)"><tspan x="0" y="0">Carbapenemase</tspan></text>
+    <text class="st20" transform="translate(322.57 694.69)"><tspan x="0" y="0">Alleles</tspan></text>
+  </g>
+  <g id="node17" pointer-events="visible">
+    <path class="st17" d="M160.13,784.22H40.17c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h119.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(54.64 811.31)"><tspan x="0" y="0">Gene Ratio</tspan></text>
+    <text class="st20" transform="translate(59.15 832.91)"><tspan x="0" y="0">Heatmaps</tspan></text>
+  </g>
+  <g id="node18" pointer-events="visible">
+    <path class="st17" d="M326.09,784.22h-119.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h119.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(218.44 811.31)"><tspan x="0" y="0">Time Series</tspan></text>
+    <text class="st20" transform="translate(238.43 832.91)"><tspan x="0" y="0">Trends</tspan></text>
+  </g>
+  <g id="node19" pointer-events="visible">
+    <path class="st8" d="M492.04,784.22h-119.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h119.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(377.06 811.31)"><tspan x="0" y="0">t-SNE Cluster</tspan></text>
+    <text class="st20" transform="translate(403.55 832.91)"><tspan x="0" y="0">Scatter</tspan></text>
+  </g>
+  <g id="node20" pointer-events="visible">
+    <path class="st17" d="M657.99,784.22h-119.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h119.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(530 811.31)"><tspan x="0" y="0">t-SNE Interactive</tspan></text>
+    <text class="st20" transform="translate(531.99 832.91)"><tspan x="0" y="0">Highlight Scatter</tspan></text>
+  </g>
+  <g id="node23" data-comment="H7" pointer-events="visible">
+    <path class="st17" d="M886.28,487.64h-148.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(742.79 514.73)"><tspan x="0" y="0">Cluster Detection</tspan></text>
+    <text class="st20" transform="translate(764.13 536.33)"><tspan x="0" y="0">Time Series</tspan></text>
+  </g>
+  <g id="node22" data-comment="G12-&gt;G13" pointer-events="visible">
+    <path class="st10" d="M886.28,398.67h-148.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(769.28 425.76)"><tspan x="0" y="0">Population</tspan></text>
+    <text class="st20" transform="translate(759.3 447.35)"><tspan x="0" y="0">Fraction Map</tspan></text>
+  </g>
+  <g id="node27" data-comment="H2" pointer-events="visible">
+    <path class="st13" d="M886.28,637.4h-148.96c-6,0-12,6-12,12v69.98c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-69.98c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(779.79 668.19)"><tspan x="0" y="0">Species</tspan></text>
+    <text class="st20" transform="translate(766.79 689.78)"><tspan x="0" y="0">Distribution</tspan></text>
+    <text class="st20" transform="translate(776.13 711.37)"><tspan x="0" y="0">Treemap</tspan></text>
+  </g>
+  <g id="node24" data-comment="H2" pointer-events="visible">
+    <path class="st17" d="M1084.22,275.3h-148.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(948.73 302.4)"><tspan x="0" y="0">Sankey Cluster</tspan></text>
+    <text class="st20" transform="translate(964.74 323.99)"><tspan x="0" y="0">Distribution</tspan></text>
+  </g>
+  <g id="node25" data-comment="H2" pointer-events="visible">
+    <path class="st17" d="M1084.22,398.67h-148.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(972.23 414.96)"><tspan x="0" y="0">Metadata</tspan></text>
+    <text class="st20" transform="translate(950.73 436.56)"><tspan x="0" y="0">Co-occurrence</tspan></text>
+    <text class="st20" transform="translate(973.23 458.15)"><tspan x="0" y="0">Heatmap</tspan></text>
+  </g>
+  <g id="node26" data-comment="H2" pointer-events="visible">
+    <path class="st9" d="M1084.22,487.64h-148.96c-6,0-12,6-12,12v40.99c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-40.99c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(941.25 514.73)"><tspan x="0" y="0">Cluster Overview</tspan></text>
+    <text class="st20" transform="translate(988.23 536.33)"><tspan x="0" y="0">Table</tspan></text>
+  </g>
+  <g id="node28" pointer-events="visible">
+    <path class="st13" d="M1081.22,637.4h-148.96c-6,0-12,6-12,12v69.98c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-69.98c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(971.73 668.19)"><tspan x="0" y="0">Replicon</tspan></text>
+    <text class="st20" transform="translate(961.74 689.78)"><tspan x="0" y="0">Distribution</tspan></text>
+    <text class="st20" transform="translate(971.07 711.37)"><tspan x="0" y="0">Treemap</tspan></text>
+  </g>
+  <g id="node29" pointer-events="visible">
+    <path class="st13" d="M886.28,753.36h-148.96c-6,0-12,6-12,12v69.98c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-69.98c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(775.29 784.15)"><tspan x="0" y="0">Antibiotic</tspan></text>
+    <text class="st20" transform="translate(767.29 805.75)"><tspan x="0" y="0">Resistance</tspan></text>
+    <text class="st20" transform="translate(750.78 827.34)"><tspan x="0" y="0">Gene Heatmap</tspan></text>
+  </g>
+  <g id="node30" pointer-events="visible">
+    <path class="st13" d="M1081.22,753.36h-148.96c-6,0-12,6-12,12v69.98c0,6,6,12,12,12h148.96c6,0,12-6,12-12v-69.98c0-6-6-12-12-12"/>
+    <text class="st20" transform="translate(984.74 784.15)"><tspan x="0" y="0">Metal</tspan></text>
+    <text class="st20" transform="translate(962.23 805.75)"><tspan x="0" y="0">Resistance</tspan></text>
+    <text class="st20" transform="translate(945.72 827.34)"><tspan x="0" y="0">Gene Heatmap</tspan></text>
+  </g>
+  <g id="edge51" data-name="edge5">
+    <path class="st3" d="M643.47,286.31h45.54"/>
+    <polygon class="st5" points="689.01 281.06 704 286.31 689.01 291.56 689.01 281.06"/>
+  </g>
+</svg>

@@ -45,7 +45,6 @@ Open Rstudio (recommended) and ensure your working directory is set to project r
 
 ```R
 setwd("path/to/PlasmidNL")
-install.packages(c("shiny"))
 ```
 
 ### 2. In Rstudio
@@ -215,4 +214,4 @@ install.packages(c(
 
 ## Workflow
 
-![PlasmidNL workflow](flowchart/PlasmidNL_flowchart.png)
+![PlasmidNL workflow](flowchart/flowchart.svg)

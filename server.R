@@ -444,7 +444,7 @@ server <- function(input, output, session) {
     )
     
     # Render plotly sankey
-    plot_ly(
+    plot_out <- plot_ly(
       type = "sankey",
       orientation = "h",
       arrangement = "fixed",

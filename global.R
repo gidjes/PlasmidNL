@@ -84,6 +84,5 @@ provinces <- left_join(nl_provinces, sample_counts, by = c("regio_naam" = "submi
 selectable_cols <- c(
   "Species","Genus", "ST", "replicon","replicon_family","mobility",
   "submitter_province","submitter_municipality","foreign_hospitalisation_history",
-  "amr","amr_classes","AMR_plasmid","carba_allele", "CP_plasmid", "metal", "virulence",
-  "biocide", "heat", "acid", "sampling_source", "DataSource"
+  "AMR_plasmid","carba_allele", "CP_plasmid", "DataSource"
 )
