@@ -23,21 +23,33 @@ server <- function(input, output, session) {
   expand_data <- reactive({
     if (is.null(input$userfile)) {
       return(metadata)
-    } else {
-      df <- open_metadata(input$userfile$datapath, "UserUpload")[[1]]
-      
-      # Optional: check headers
-      expected_headers <- colnames(metadata)
-      missing_cols <- setdiff(expected_headers, colnames(df))
-      if (!all(expected_headers %in% colnames(df))) {
-        showNotification("Uploaded file headers do not match expected format", type = "error")
-        print(missing_cols)
-        return(metadata)
-      }
-      
-      # Combine datasets for plots
-      rbind(metadata, df)
     }
+
+    df <- open_metadata(
+      input$userfile$datapath,
+      "UserUpload"
+    )[[1]]
+
+    # Check headers
+    expected_headers <- colnames(metadata)
+    missing_cols <- setdiff(expected_headers, colnames(df))
+
+    if (!all(expected_headers %in% colnames(df))) {
+      showNotification(
+        "Uploaded file headers do not match expected format",
+        type = "error"
+      )
+
+      print(missing_cols)
+
+      return(metadata)
+    }
+
+    # Clean uploaded data
+    df <- clean_uploaded_data(df)
+
+    # Combine datasets for plots
+    rbind(metadata, df)
   })
   
   observeEvent({

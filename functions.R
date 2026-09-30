@@ -201,6 +201,193 @@ open_metadata <- function(path, source) {
 }
 
 
+clean_uploaded_data <- function(df) {
+
+  # Treat NA, empty strings, and "-" as missing
+  is_empty <- function(x) {
+    is.na(x) | trimws(as.character(x)) == "" | trimws(as.character(x)) == "-"
+  }
+
+  # Replace missing values with a specified value
+  fill_missing <- function(x, value) {
+    x[is_empty(x)] <- value
+    x
+  }
+
+  # ---------------------------------------------------------
+  # Plasmid
+  # ---------------------------------------------------------
+  # Every row represents an individual plasmid, so every
+  # missing Plasmid gets its own unique identifier.
+
+  missing_plasmid <- is_empty(df$Plasmid)
+
+  if (any(missing_plasmid)) {
+    df$Plasmid[missing_plasmid] <- paste0(
+      "UserUpload_Plasmid_",
+      sprintf("%06d", seq_len(sum(missing_plasmid)))
+    )
+  }
+
+  # ---------------------------------------------------------
+  # Parent
+  # ---------------------------------------------------------
+  # Missing Parent values can each receive their own code.
+
+  missing_parent <- is_empty(df$Parent)
+
+  if (any(missing_parent)) {
+    df$Parent[missing_parent] <- paste0(
+      "UserUpload_Parent_",
+      sprintf("%06d", seq_len(sum(missing_parent)))
+    )
+  }
+
+  # ---------------------------------------------------------
+  # Fields with default values
+  # ---------------------------------------------------------
+
+  df$replicon <- fill_missing(
+    df$replicon,
+    "No hit found"
+  )
+
+  df$replicon_family <- fill_missing(
+    df$replicon_family,
+    "Unknown"
+  )
+
+  df$Species <- fill_missing(
+    df$Species,
+    "Unknown"
+  )
+
+  df$ST <- fill_missing(
+    df$ST,
+    "Unknown"
+  )
+
+  df$mobility <- fill_missing(
+    df$mobility,
+    "non-mobilizable"
+  )
+
+  df$mge_cluster <- fill_missing(
+    df$mge_cluster,
+    "-"
+  )
+
+  df$tsne1D <- fill_missing(
+    df$tsne1D,
+    "-"
+  )
+
+  df$tsne2D <- fill_missing(
+    df$tsne2D,
+    "-"
+  )
+
+  # ---------------------------------------------------------
+  # Fields where blank or "-" means no value
+  # ---------------------------------------------------------
+
+  empty_fields <- c(
+    "amr",
+    "amr_classes",
+    "carba_allele",
+    "virulence",
+    "metal",
+    "metal_classes",
+    "biocide",
+    "heat",
+    "acid"
+  )
+
+  for (col in empty_fields) {
+    df[[col]][is_empty(df[[col]])] <- NA
+  }
+
+  # ---------------------------------------------------------
+  # AMR_plasmid
+  # ---------------------------------------------------------
+  # Blank -> 0 if no AMR
+  # Blank -> 1 if AMR is present
+
+  amr_present <- !is_empty(df$amr)
+  missing_amr_plasmid <- is_empty(df$AMR_plasmid)
+
+  df$AMR_plasmid[
+    missing_amr_plasmid & amr_present
+  ] <- "1"
+
+  df$AMR_plasmid[
+    missing_amr_plasmid & !amr_present
+  ] <- "0"
+
+  # ---------------------------------------------------------
+  # CP_plasmid
+  # ---------------------------------------------------------
+  # Blank -> 0 if no carbapenemase allele
+  # Blank -> 1 if carba_allele is present
+
+  carba_present <- !is_empty(df$carba_allele)
+  missing_cp_plasmid <- is_empty(df$CP_plasmid)
+
+  df$CP_plasmid[
+    missing_cp_plasmid & carba_present
+  ] <- "1"
+
+  df$CP_plasmid[
+    missing_cp_plasmid & !carba_present
+  ] <- "0"
+
+  # ---------------------------------------------------------
+  # Optional fields
+  # ---------------------------------------------------------
+  # These can legitimately remain empty.
+
+  optional_fields <- c(
+    "GC_perc",
+    "bp_length",
+    "submitter_municipality",
+    "submitter_province"
+  )
+
+  for (col in optional_fields) {
+    df[[col]][is_empty(df[[col]])] <- NA
+  }
+
+  # ---------------------------------------------------------
+  # Foreign hospitalisation history
+  # ---------------------------------------------------------
+
+  df$foreign_hospitalisation_history[
+    is_empty(df$foreign_hospitalisation_history)
+  ] <- "No known travel history"
+
+  # ---------------------------------------------------------
+  # Healthcare employee
+  # ---------------------------------------------------------
+  # Empty is allowed.
+  # Yes / TRUE are normalised to "Yes".
+
+  missing_healthcare <- is_empty(df$healthcare_employee)
+
+  df$healthcare_employee[missing_healthcare] <- NA
+
+  healthcare_yes <- !missing_healthcare &
+    tolower(trimws(as.character(df$healthcare_employee))) %in%
+    c("yes", "true")
+
+  df$healthcare_employee[healthcare_yes] <- "Yes"
+
+  # ---------------------------------------------------------
+  # Return cleaned dataframe
+  # ---------------------------------------------------------
+
+  df
+}
+
 create_normalised_co_occurance <- function(df, subset_val, breakdown_col, alt_meta) {
   if (!(alt_meta == "None")) {
     df <- df %>%
@@ -575,30 +762,34 @@ categorical_bar <- function(df, column_name, colourlist, title, xlab) {
       )
     )
   
-  df_legend <- data.frame(id = seq_along(plot_ly$x$data), legend_entries = unlist(lapply(plot_ly$x$data, `[[`, "name")))
-  keep_groups <- unique(df[[column_name]])
-  # Split each legend entry into components
-  df_legend$components <- strsplit(df_legend$legend_entries, ",")
-  
-  # Clean parentheses and whitespace
-  df_legend$components <- lapply(df_legend$components, function(x) gsub("^\\(|\\)$", "", trimws(x)))
-  
-  # Determine which legend entries to keep based on the column values
-  df_legend$is_keep <- sapply(df_legend$components, function(x) any(x %in% keep_groups))
-  
-  # Determine the label to show in the legend (e.g., the intersection with keep_groups)
-  df_legend$legend_group <- sapply(df_legend$components, function(x) paste(x[x %in% keep_groups], collapse = ","))
-  df_legend$is_first <- !duplicated(df_legend$legend_group)
-  
-  # Update plotly traces
-  for (i in df_legend$id) {
-    group <- df_legend$legend_group[[i]]
-    is_first <- df_legend$is_first[[i]]
-    is_keep <- df_legend$is_keep[[i]]
-    
-    plot_ly$x$data[[i]]$name <- group
-    plot_ly$x$data[[i]]$legendgroup <- group
-    plot_ly$x$data[[i]]$showlegend <- is_first && is_keep
+  keep_groups <- unique(as.character(df[[column_name]]))
+  keep_groups <- keep_groups[!is.na(keep_groups)]
+  keep_groups <- keep_groups[order(nchar(keep_groups), decreasing = TRUE)]  # longest first
+
+  match_group <- function(trace_name) {
+    if (is.null(trace_name)) return(NA_character_)
+    inner  <- gsub("^\\(|\\)$", "", trimws(trace_name))
+    padded <- paste0(",", inner, ",")
+    for (g in keep_groups) {
+      # comma-delimited match so "repA" doesn't match inside "repAB"
+      if (grepl(paste0(",", g, ","), padded, fixed = TRUE)) return(g)
+    }
+    NA_character_
+  }
+
+  trace_names  <- vapply(plot_ly$x$data,
+                         function(t) if (is.null(t$name)) NA_character_ else t$name,
+                         character(1))
+  legend_group <- vapply(trace_names, match_group, character(1), USE.NAMES = FALSE)
+  is_keep      <- !is.na(legend_group)
+  is_first     <- is_keep & !duplicated(legend_group)
+
+  for (i in seq_along(plot_ly$x$data)) {
+    if (is_keep[i]) {
+      plot_ly$x$data[[i]]$name        <- legend_group[i]
+      plot_ly$x$data[[i]]$legendgroup <- legend_group[i]
+    }
+    plot_ly$x$data[[i]]$showlegend <- is_first[i]
   }
   return(plot_ly)
 }
@@ -786,36 +977,18 @@ frac_heatmap <- function(df, column_name_y, column_name_x, title, none_string = 
   return(plot_ly)
 }
 
-wrap_label <- function(x, width) {
-  if (is.null(width)) return(x)
-  vapply(x, function(s) {
-    words <- strsplit(s, " ", fixed = TRUE)[[1]]
-    out <- character(0); line <- ""; line_len <- 0
-    for (w in words) {
-      w_len <- nchar(gsub("<[^>]+>", "", w))      # visible length only
-      if (line_len > 0 && line_len + 1 + w_len > width) {
-        out <- c(out, line); line <- w; line_len <- w_len
-      } else {
-        line <- if (line_len == 0) w else paste(line, w)
-        line_len <- line_len + (if (line_len == 0) 0 else 1) + w_len
-      }
-    }
-    paste(c(out, line), collapse = "<br>")
-  }, character(1), USE.NAMES = FALSE)
-}
 
-ellips_scatter <- function(df, column_name = "mge_cluster", legend_wrap = 20) {
+ellips_scatter <- function(df, column_name = "mge_cluster") {
   df <- df %>%
     filter(mge_cluster != "-") %>%
     mutate(
       tsne1D = ifelse(tsne1D %in% c("", "-"), NA, as.numeric(tsne1D)),
       tsne2D = ifelse(tsne2D %in% c("", "-"), NA, as.numeric(tsne2D)),
-      # explicit category label, used for legend grouping and hover text
       .cat = ifelse(is.na(.data[[column_name]]), "NA", as.character(.data[[column_name]]))
     )
   df_mge_clusters <- df %>%
     filter(mge_cluster != "-1")
-  
+
   gg_plot <- df %>%
     ggplot() +
     stat_ellipse(
@@ -854,7 +1027,7 @@ ellips_scatter <- function(df, column_name = "mge_cluster", legend_wrap = 20) {
     scale_color_manual(values = mge_cluster_palette, guide = "none") +
     scale_shape_manual(values = c("Reference" = 21, "UserUpload" = 24), guide = "none") +
     labs(
-      title = str_glue("tSNE-coordinate scatterplot of mge_clustered plasmids\nColoured by {column_name}"),
+      title = str_glue("t-SNE-coordinate scatterplot of mge_clustered plasmids\nColoured by {column_name}"),
       y = "tsne2D", x = "tsne1D"
     ) +
     theme(
@@ -865,54 +1038,64 @@ ellips_scatter <- function(df, column_name = "mge_cluster", legend_wrap = 20) {
       plot.title = element_text(size = 12, color = "black", face = "plain")
     ) +
     guides(fill = guide_legend(title = column_name))
-  
+
   gg_plot <- add_palette(gg_plot, column_name, df)
-  
-  # "text" aesthetic warnings for geoms that don't know it are expected
+
   plot_ly <- suppressWarnings(ggplotly(gg_plot, tooltip = "text")) %>%
     layout(showlegend = TRUE)
-  
+
   seen_groups <- character(0)
-  
+
   for (i in seq_along(plot_ly$x$data)) {
-    tr   <- plot_ly$x$data[[i]]
-    mode <- if (is.null(tr$mode)) "" else tr$mode
-    
-    if (grepl("markers", mode)) {
+    tr      <- plot_ly$x$data[[i]]
+    tr_mode <- if (is.null(tr$mode)) "" else tr$mode   # renamed from `mode` to avoid shadowing base::mode
+
+    if (grepl("markers", tr_mode)) {
+      # ---- point trace: category comes from our own hover text ----
       txt <- tr$text
       if (is.null(txt) || length(txt) == 0) next
       cat_i <- sub("<br>.*$", "", as.character(txt[[1]]))
-      
-      plot_ly$x$data[[i]]$name        <- wrap_label(cat_i, legend_wrap)
+
+      plot_ly$x$data[[i]]$name        <- cat_i
       plot_ly$x$data[[i]]$legendgroup <- cat_i
       plot_ly$x$data[[i]]$showlegend  <- !(cat_i %in% seen_groups)
       seen_groups <- c(seen_groups, cat_i)
-    } else if (grepl("lines", mode)) {
+
+    } else if (grepl("lines", tr_mode)) {
       # ---- ellipse trace: always visible, never in legend, hoverable ----
       if (is.null(tr$text)) {
         plot_ly$x$data[[i]]$text <- paste0("mge_cluster: ", tr$name)
       }
       plot_ly$x$data[[i]]$showlegend  <- FALSE
-      plot_ly$x$data[[i]]$legendgroup <- NULL   # not tied to any legend item
+      plot_ly$x$data[[i]]$legendgroup <- NULL
       plot_ly$x$data[[i]]$fill        <- "toself"
-      plot_ly$x$data[[i]]$fillcolor   <- "rgba(0,0,0,0)"  # invisible, but hoverable
+      plot_ly$x$data[[i]]$fillcolor   <- "rgba(0,0,0,0)"
       plot_ly$x$data[[i]]$hoveron     <- "fills+points"
       plot_ly$x$data[[i]]$hoverinfo   <- "text"
     }
   }
+
+  ann <- plot_ly$x$layout$annotations
+  if (!is.null(ann)) {
+    plot_ly$x$layout$annotations <- Filter(
+      function(a) !identical(trimws(as.character(a$text)), column_name),
+      ann
+    )
+  }
+
   plot_ly %>%
     layout(
       showlegend = TRUE,
+      margin = list(t=60),
       legend = list(
         orientation = "h",
-        x = 0, xanchor = "left",
-        y = -0.3, yanchor = "top",
-        title = list(text = paste0(column_name, ": ")),
-        font = list(size = 12),
-        entrywidthmode = "fraction",
-        entrywidth = 0                # each entry sized to its own text
-      ),
-      margin = list(r = 20, b = 150)
+        x = 0.5, xanchor = "center",
+        y = -0.2, yanchor = "top",
+        title = list(text = column_name, side = "top"),
+        itemwidth = 30,
+        scrollbar = TRUE,
+        font = list(size = 10) 
+      )
     )
 }
 

@@ -18,7 +18,6 @@ ui <- tagList(
         ".csv"
       )
     ),
-    checkboxInput("header", "Header", TRUE),
     
     # Menu items
     sidebarMenu(
