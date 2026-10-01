@@ -115,7 +115,7 @@ For help filling out the template, a [pre-filled example](upload_example_records
 | `submitter_municipality`          | Municipality associated with the submitting record, corresponding to the lower NUTS/local administrative level.                                    | `character`   | `Bilthoven`                      |
 | `submitter_province`              | Province associated with the submitting record, corresponding to the higher NUTS administrative level.                                             | `character`   | `Utrecht`                      |
 | `foreign_hospitalisation_history` | Country in which the patient was hospitalised within the 6 months preceding sampling. Leave empty if there was no foreign hospitalisation.         | `character`   | `Denmark`                      |
-| `healthcare_employee`             | Indicates whether the patient works in healthcare.                                                                                                 | `logical`     | `1`                         |
+| `healthcare_employee`             | Indicates whether the patient works in healthcare.                                                                                                 | `numerical`     | `1`                         |
 
 
 ### Using your own map
@@ -186,30 +186,30 @@ If package installation fails, try to install all dependencies manually:
 ```R
 install.packages(c(
     # Shiny / Dashboards
-    "shiny", "shinydashboard", "shinyFiles",
-    "shinythemes", "shinyWidgets", "flexdashboard",
-    
+    "shiny", "shinydashboard", "shinyFiles", "shinythemes",
+    "shinyWidgets", "flexdashboard",
+
     # Data manipulation
-    "tidyverse", "data.table", "lubridate", "reshape2",
-    
+    "tidyverse", "data.table", "lubridate", "reshape2", "terra",
+
     # Visualization
     "ggplot2", "cowplot", "plotly", "DT", "leaflet",
     "ggalluvial", "ggforce", "treemapify", "scales",
     "RColorBrewer", "colorspace", "gridExtra", "ellipse",
     "grDevices",
-    
+
     # Mapping / spatial
     "sf", "rnaturalearth", "rnaturalearthdata",
-    
+
     # Trees / widgets
     "collapsibleTree", "htmlwidgets",
-    
+
     # I/O / external data
-    "here", "readr", "jsonlite", "rentrez", "cbsodataR",
-    
+    "here", "readr", "jsonlite", "rentrez", "config",
+
     # Explicit tidyverse components you loaded
     "stringr"
-    ))
+))
 ```
 
 ## Workflow
