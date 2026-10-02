@@ -20,7 +20,7 @@ Clone the repository and change to the project directory:
 
 ```bash
     git clone https://gitlab.com/gidjes/plasmidnl.git
-    cd PlasmidNL
+    cd plasmidnl
 ```
 
 The project uses ```renv``` to manage its R package dependencies and versions.
